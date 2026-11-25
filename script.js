@@ -1,19 +1,10 @@
 /* =========================================================
-   WEB ACADEMY — SCRIPT.JS
-   Китобхонаи интерактивии офлайн (HTML, CSS, JavaScript)
+   WEB ACADEMY — SCRIPT.JS (ВЕРСИЯИ ПРЕМИУМ)
+   AZIZZODA COMPANY | 6 Курс, Studio, AI Mentor, Луғат, PWA
    ========================================================= */
 (function () {
   "use strict";
 
-  const STORAGE_KEYS = {
-    theme: "wa_theme_v1",
-    favorites: "wa_favorites_v1",
-    learned: "wa_learned_v1",
-    fontSize: "wa_code_font_v1",
-    openFolders: "wa_open_folders_v1"
-  };
-
-  /* -------------------- МАЪЛУМОТИ ДАРСҲО -------------------- */
   const LESSONS = [
     // ==================== HTML: Basics ====================
     {
@@ -1728,26 +1719,398 @@
     }
   ];
 
-  /* -------------------- ҲОЛАТИ БАРНОМА -------------------- */
+  const EXTRA_LESSONS = [
+    // ==================== КУРСИ 4: ҶУДО КАРДАНИ ФАЙЛҲО ====================
+    {
+      id: "proj-why-separate",
+      name: "Чаро HTML, CSS ва JS-ро ҷудо мекунанд?",
+      lang: "HTML",
+      group: "Сохтори лоиҳа",
+      course: 4,
+      description: "Ҷудо кардани сохтор (index.html), ороиш (style.css) ва мантиқ (script.js) ба файлҳои алоҳида кодро тоза, осонфаҳм ва барои гурӯҳи барномасозон қобили идора месозад.",
+      purpose: "Нигоҳ доштани тартибот (Separation of Concerns) дар лоиҳаҳои хурду калон.",
+      usage: "Дар ҳамаи веббарномаҳои касбӣ ба ҷои навиштани ҳама чиз дар як файл истифода мешавад.",
+      syntax: "web-project/\n├── index.html\n├── style.css\n├── script.js\n└── images/",
+      shortExample: "<link rel=\"stylesheet\" href=\"style.css\">\n<script src=\"script.js\"><\/script>",
+      fullExample: "<!DOCTYPE html>\n<html lang=\"tg\">\n<head>\n  <meta charset=\"UTF-8\">\n  <title>Лоиҳаи сохтордор</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <h1>Лоиҳаи 3-файла</h1>\n  <script src=\"script.js\"><\/script>\n</body>\n</html>",
+      outputText: "Браузер index.html-ро хонда, style.css ва script.js-ро ба он пайваст мекунад.",
+      previewHtml: "<div style='font-family:sans-serif;'><strong>Сохтори лоиҳа:</strong><pre style='background:#0b1426;color:#38bdf8;padding:10px;border-radius:8px;'>project/\n├── index.html\n├── style.css\n└── script.js</pre></div>",
+      mistakes: "Ҷойгир кардани садҳо сатри CSS ва JS дар дохили index.html.",
+      tip: "Агар style.css ва script.js дар ҳамон папкаи index.html бошанд, номи файлро бевосита нависед.",
+      taskPrompt: "Дар коди зер теги <link> барои style.css ва теги <script> барои script.js-ро илова кунед.",
+      starterCode: "<!DOCTYPE html>\n<html lang=\"tg\">\n<head>\n  <meta charset=\"UTF-8\">\n  <!-- style.css-ро ин ҷо пайваст кунед -->\n</head>\n<body>\n  <h1>Салом</h1>\n  <!-- script.js-ро ин ҷо пайваст кунед -->\n</body>\n</html>",
+      hint: "Барои CSS: <link rel=\"stylesheet\" href=\"style.css\"> ва барои JS: <script src=\"script.js\"><\/script>.",
+      expectedTokens: ["style.css", "script.js", "<link", "<script"]
+    },
+    {
+      id: "proj-index-css-js",
+      name: "Сохтан ва пайваст кардани index.html, style.css, script.js",
+      lang: "HTML",
+      group: "Сохтори лоиҳа",
+      course: 4,
+      description: "index.html саҳифаи асосии оғози сайт аст. style.css дар <head> бо <link> ва script.js дар охири <body> бо <script src=\"...\"> пайваст карда мешавад.",
+      purpose: "Боркунии дурусти услубҳо пеш аз намоиш ва иҷрои JS пас аз сохта шудани унсурҳои DOM.",
+      usage: "Дар ҳама гуна сайти статикӣ ё веббарномаи муосир.",
+      syntax: "<link rel=\"stylesheet\" href=\"style.css\">\n<script src=\"script.js\" defer><\/script>",
+      shortExample: "<link rel=\"stylesheet\" href=\"css/style.css\">",
+      fullExample: "<!DOCTYPE html>\n<html lang=\"tg\">\n<head>\n  <meta charset=\"UTF-8\">\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <button id=\"btn\">Санҷиш</button>\n  <script src=\"script.js\"><\/script>\n</body>\n</html>",
+      outputText: "Тугма бо ороиши style.css намоиш ёфта, script.js пас аз он фаъол мегардад.",
+      previewHtml: "<button style='background:#2563eb;color:#fff;padding:8px 16px;border:none;border-radius:8px;'>Пайваст шуд</button>",
+      mistakes: "Гузоштани <script src=\"script.js\"> дар <head> бе defer — он гоҳ JS унсурҳои <body>-ро намеёбад.",
+      tip: "Калимаи defer ба браузер мегӯяд, ки скриптро пас аз хондани HTML иҷро кунад.",
+      taskPrompt: "Теги <script>-ро бо атрибути src=\"script.js\" ва defer нависед.",
+      starterCode: "<script src=\"\"><\/script>",
+      hint: "Дар дохили src=\"script.js\" нависед ва атрибути defer-ро илова кунед.",
+      expectedTokens: ["script.js", "defer", "<script"]
+    },
+    {
+      id: "proj-folders-assets",
+      name: "Папкаҳои images/ ва assets/ ва ислоҳи роҳҳо",
+      lang: "HTML",
+      group: "Сохтори лоиҳа",
+      course: 4,
+      description: "Файлҳои расм, иконка ва шрифтҳоро дар папкаҳои алоҳидаи images/ ё assets/ нигоҳ медоранд. Роҳи нисбӣ (Relative Path) бо ./ ё ../ муайян мешавад.",
+      purpose: "Пешгирии бетартибӣ дар решаи лоиҳа ва осон кардани ёфтани файлҳо.",
+      usage: "images/logo.png барои расми дохили папкаи images ва ../style.css барои баромадан ба як сатҳ боло.",
+      syntax: "<img src=\"images/logo.png\" alt=\"Логотип\">\n<link rel=\"stylesheet\" href=\"assets/style.css\">",
+      shortExample: "<img src=\"assets/images/banner.jpg\" alt=\"Баннер\">",
+      fullExample: "<!-- Сохтор: index.html, assets/css/style.css, images/icon.png -->\n<link rel=\"stylesheet\" href=\"assets/css/style.css\">\n<img src=\"images/icon.png\" alt=\"Иконка\">",
+      outputText: "Файлҳо аз папкаҳои мувофиқ бе хатои 404 (Not Found) бор мешаванд.",
+      previewHtml: "<div style='font-family:monospace;background:#0b1426;color:#86efac;padding:10px;border-radius:8px;'>images/logo.png &check; | assets/style.css &check;</div>",
+      mistakes: "Навиштани роҳи компютери худ (масалан C:\\Users\\Desktop\\logo.png) — он дар телефони дигар кор намекунад!",
+      tip: "Дар номи файлҳо ва папкаҳо танҳо ҳарфҳои хурди лотинӣ, рақам ва тире (-) истифода баред.",
+      taskPrompt: "Теги <img> созед, ки расми hero.png-ро аз папкаи images/ бо alt-и дуруст мегирад.",
+      starterCode: "<img src=\"\" alt=\"\">",
+      hint: "src=\"images/hero.png\" ва дар alt тавсифи расмро нависед.",
+      expectedTokens: ["images/hero.png", "alt=", "<img"]
+    },
+    {
+      id: "proj-full-3file",
+      name: "Сохтани лоиҳаи пурраи веб аз се файл",
+      lang: "JavaScript",
+      group: "Сохтори лоиҳа",
+      course: 4,
+      description: "Дар амал якҷоя кардани index.html (сохтор), style.css (ороиш) ва script.js (интерактивӣ) барои сохтани корти интерактивии маҳсулот.",
+      purpose: "Мустаҳкам кардани малакаи сохтани лоиҳаи мустақил.",
+      usage: "Ин усулро шумо метавонед фавран дар Web Academy Studio санҷед.",
+      syntax: "// index.html -> button#likeBtn\n// style.css -> .card { ... }\n// script.js -> likeBtn.addEventListener(...)",
+      shortExample: "document.getElementById('likeBtn').addEventListener('click', () => {});",
+      fullExample: "<div class=\"card\">\n  <h3>Лоиҳаи ман</h3>\n  <button id=\"cntBtn\">Пахш: 0</button>\n</div>\n<script>\n  let c = 0;\n  const b = document.getElementById('cntBtn');\n  b.addEventListener('click', () => { c++; b.textContent = 'Пахш: ' + c; });\n<\/script>",
+      outputText: "Ҳангоми пахши тугма шумора зиёд мешавад.",
+      previewHtml: "<button id='p4' style='background:#2563eb;color:#fff;padding:8px 14px;border:none;border-radius:8px;cursor:pointer;'>Пахш: 0</button><script>let c=0;document.getElementById('p4').onclick=function(){this.textContent='Пахш: '+(++c);};<\/script>",
+      mistakes: "Номувофиқии ID байни index.html ва script.js.",
+      tip: "Баъд аз анҷоми ин дарс ба Web Academy Studio равед ва лоиҳаи 3-файлаи худро созед!",
+      taskPrompt: "Бо JavaScript функсияи click барои тугмаи id=\"btn\" нависед, ки матнашро ба «Тайёр» иваз кунад.",
+      starterCode: "const btn = document.getElementById('btn');\n// addEventListener илова кунед",
+      hint: "btn.addEventListener('click', () => { btn.textContent = 'Тайёр'; });",
+      expectedTokens: ["addEventListener", "click", "textContent"]
+    },
+
+    // ==================== КУРСИ 5: ТУГМАҲОИ ПРЕМИУМ БЕ ЭМОДЗИ ====================
+    {
+      id: "btn-why-no-emoji",
+      name: "Чаро дар UI-и касбӣ эмодзи мувофиқ нест ва истифодаи SVG",
+      lang: "HTML",
+      group: "Тугмаҳои премиум",
+      course: 5,
+      description: "Эмодзиҳо дар Android, iOS ва Windows шаклҳои гуногун доранд ва бо ранги бренди шумо мувофиқ намешаванд. Нишонаҳои SVG (Scalable Vector Graphics) дар ҳама гуна экран тез, сабук ва бо CSS рангшавандаанд.",
+      purpose: "Эҷоди интерфейси ягона, касбӣ ва премиум бо нишонаҳои векторӣ.",
+      usage: "Дар тугмаҳо, менюҳо ва панелҳои идоракунӣ бо <svg viewBox=\"0 0 24 24\"> истифода мешавад.",
+      syntax: "<button class=\"pro-btn\">\n  <svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" stroke=\"currentColor\" fill=\"none\"><polyline points=\"20 6 9 17 4 12\"/></svg>\n  <span>Тасдиқ</span>\n</button>",
+      shortExample: "<svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><circle cx=\"12\" cy=\"12\" r=\"9\"/></svg>",
+      fullExample: "<button style=\"display:inline-flex;align-items:center;gap:8px;padding:10px 18px;background:#2563eb;color:#fff;border:none;border-radius:10px;font-weight:700;\">\n  <svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\"><polyline points=\"20 6 9 17 4 12\"/></svg>\n  <span>Захира шуд</span>\n</button>",
+      outputText: "Тугмаи кабуд бо нишонаи тозаи вектории SVG ва матн бе ягон эмодзи.",
+      previewHtml: "<button style='display:inline-flex;align-items:center;gap:8px;padding:10px 18px;background:#2563eb;color:#fff;border:none;border-radius:10px;font-weight:700;font-family:sans-serif;'><svg viewBox='0 0 24 24' width='18' height='18' fill='none' stroke='currentColor' stroke-width='2.2'><polyline points='20 6 9 17 4 12'/></svg><span>Захира шуд</span></button>",
+      mistakes: "Истифодаи расмҳои PNG барои иконкаҳои хурд ба ҷои SVG (дар экранҳои Retina хира мешаванд).",
+      tip: "Хусусияти stroke=\"currentColor\" имкон медиҳад, ки ранги SVG бо ранги матни тугма (color) автоматӣ иваз шавад.",
+      taskPrompt: "Тугмае созед, ки дар дохилаш як <svg> бо stroke=\"currentColor\" ва матни <span> дошта бошад.",
+      starterCode: "<button class=\"btn\">\n  <!-- SVG ва матн -->\n</button>",
+      hint: "<svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" stroke=\"currentColor\" fill=\"none\"><path d=\"M5 12h14\"/></svg><span>Идома</span>",
+      expectedTokens: ["<button", "<svg", "currentColor", "<span"]
+    },
+    {
+      id: "btn-gradient",
+      name: "Тугмаҳои Gradient ва Dark Premium",
+      lang: "CSS",
+      group: "Тугмаҳои премиум",
+      course: 5,
+      description: "Тугмаҳои Gradient бо гузариши ду ранги кабуд ва сояи мулоим (box-shadow) диққати корбарро ба амали асосӣ (CTA) ҷалб мекунанд.",
+      purpose: "Сохтани тугмаҳои асосии даъват ба амал (Оғоз, Харид, Ирсол).",
+      usage: "Бо linear-gradient(135deg, #2563eb, #38bdf8) ва сояи ранга.",
+      syntax: ".btn-grad {\n  background: linear-gradient(135deg, #2563eb, #0284c7);\n  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);\n}",
+      shortExample: ".btn-dark { background: #0b1426; border: 1px solid #38bdf8; color: #f8fafc; }",
+      fullExample: "<style>\n.pro-grad {\n  background: linear-gradient(135deg, #2563eb, #38bdf8);\n  color: #fff;\n  padding: 12px 24px;\n  border: none;\n  border-radius: 12px;\n  font-weight: 700;\n  box-shadow: 0 8px 22px rgba(37, 99, 235, 0.4);\n  cursor: pointer;\n}\n</style>\n<button class=\"pro-grad\">Тугмаи Gradient</button>",
+      outputText: "Тугмаи премиуми дурахшони кабуд бо сояи нарм.",
+      previewHtml: "<button style='background:linear-gradient(135deg,#2563eb,#38bdf8);color:#fff;padding:12px 24px;border:none;border-radius:12px;font-weight:700;box-shadow:0 8px 22px rgba(37,99,235,0.4);font-family:sans-serif;'>Тугмаи Gradient</button>",
+      mistakes: "Истифодаи градиенти хеле тез бо 4-5 ранги гуногун.",
+      tip: "Ҳамеша ду ранги ба ҳам наздикро (масалан кабуди тира ба кабуди равшан) интихоб кунед.",
+      taskPrompt: "Ба класси .btn-grad хосияти background бо linear-gradient ва border-radius: 12px диҳед.",
+      starterCode: ".btn-grad {\n  color: white;\n  padding: 12px 20px;\n}",
+      hint: "background: linear-gradient(135deg, #2563eb, #38bdf8); border-radius: 12px;",
+      expectedTokens: ["linear-gradient", "border-radius"]
+    },
+    {
+      id: "btn-glass-neumorph",
+      name: "Тугмаҳои Glassmorphism ва Neumorphism",
+      lang: "CSS",
+      group: "Тугмаҳои премиум",
+      course: 5,
+      description: "Glassmorphism эффекти шишаи хира бо backdrop-filter: blur(10px) ва сарҳади шаффоф аст. Neumorphism бошад бо ду сояи муқобил (равшан ва торик) эҳсоси барҷастагӣ месозад.",
+      purpose: "Ороиши панелҳои муосир ва интерфейсҳои шишагин.",
+      usage: "Дар заминаҳои ранга ё торик Glassmorphism хеле зебо менамояд.",
+      syntax: ".btn-glass {\n  background: rgba(255, 255, 255, 0.12);\n  backdrop-filter: blur(10px);\n  border: 1px solid rgba(255, 255, 255, 0.25);\n}",
+      shortExample: ".btn-neu { background: #0b1426; box-shadow: 5px 5px 12px #030711, -4px -4px 10px #152444; }",
+      fullExample: "<div style=\"background:linear-gradient(135deg,#050b18,#1e3a8a);padding:20px;border-radius:12px;\">\n  <button style=\"background:rgba(255,255,255,0.14);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.28);color:#fff;padding:10px 20px;border-radius:10px;\">Шишаи муосир</button>\n</div>",
+      outputText: "Тугмаи шаффофи шишагин дар болои заминаи кабуди тира.",
+      previewHtml: "<div style='background:linear-gradient(135deg,#050b18,#1e3a8a);padding:18px;border-radius:12px;'><button style='background:rgba(255,255,255,0.14);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.28);color:#fff;padding:10px 20px;border-radius:10px;font-family:sans-serif;'>Шишаи муосир</button></div>",
+      mistakes: "Истифодаи Glassmorphism дар заминаи сафеди оддӣ — бе заминаи ранга эффекти шиша ноаён мемонад.",
+      tip: "Барои хонданбобии матн дар Glassmorphism сарҳади 1px solid rgba(255,255,255,0.2) илова кунед.",
+      taskPrompt: "Тугмаи Glassmorphism-ро бо background: rgba(...) ва backdrop-filter: blur(10px) нависед.",
+      starterCode: ".btn-glass {\n  color: #fff;\n  padding: 10px 18px;\n}",
+      hint: "background: rgba(255, 255, 255, 0.12); backdrop-filter: blur(10px);",
+      expectedTokens: ["rgba(", "backdrop-filter", "blur("]
+    },
+    {
+      id: "btn-states-3d",
+      name: "Тугмаҳои 3D, Hover, Active, Focus ва Mobile",
+      lang: "CSS",
+      group: "Тугмаҳои премиум",
+      course: 5,
+      description: "Тугмаи касбӣ бояд 3 ҳолат дошта бошад: :hover (ҳангоми бурдани муш), :active (лаҳзаи пахш — мисли тугмаи 3D ба поён меравад) ва :focus-visible (барои клавиатура). Дар телефон андозаи пахш бояд на камтар аз 44px бошад.",
+      purpose: "Додани эҳсоси воқеии ламс (Tactile feedback) ба корбар.",
+      usage: "Дар ҳамаи тугмаҳои интерактивӣ.",
+      syntax: ".btn-3d { box-shadow: 0 6px 0 #1d4ed8; transition: transform 0.12s; }\n.btn-3d:active { transform: translateY(4px); box-shadow: 0 2px 0 #1d4ed8; }",
+      shortExample: ".btn:focus-visible { outline: 2px solid #38bdf8; outline-offset: 2px; }",
+      fullExample: "<style>\n.b3d { background:#2563eb; color:#fff; border:none; padding:12px 22px; min-height:44px; border-radius:10px; font-weight:700; box-shadow:0 6px 0 #1e40af; cursor:pointer; transition:0.1s; }\n.b3d:active { transform:translateY(4px); box-shadow:0 2px 0 #1e40af; }\n</style>\n<button class=\"b3d\">Пахш кунед (3D)</button>",
+      outputText: "Тугмаи 3D, ки ҳангоми пахш ба поён фурӯ меравад.",
+      previewHtml: "<style>.b3d{background:#2563eb;color:#fff;border:none;padding:12px 22px;min-height:44px;border-radius:10px;font-weight:700;box-shadow:0 6px 0 #1e40af;cursor:pointer;transition:0.1s;}.b3d:active{transform:translateY(4px);box-shadow:0 2px 0 #1e40af;}</style><button class='b3d'>Пахш кунед (3D)</button>",
+      mistakes: "Нест кардани outline: none бе додани :focus-visible.",
+      tip: "Дар экранҳои хурди Android min-height: 44px; пахши тугмаро бо ангушт бехато мекунад.",
+      taskPrompt: "Барои .btn-3d ҳолати :active нависед, ки transform: translateY(4px) дошта бошад.",
+      starterCode: ".btn-3d:active {\n  /* ҳаракати пахш */\n}",
+      hint: "Дар дохили .btn-3d:active хосияти transform: translateY(4px); нависед.",
+      expectedTokens: [":active", "transform:", "translateY"]
+    },
+
+    // ==================== КУРСИ 6: CSS-И ПЕШРАФТА ВА 3D + THREE.JS ====================
+    {
+      id: "css3d-perspective",
+      name: "CSS 3D, Perspective ва RotateX/Y/Z",
+      lang: "CSS",
+      group: "Тарроҳии 3D",
+      course: 6,
+      description: "CSS 3D имкон медиҳад унсурҳоро дар фазои сеченака (меҳварҳои X, Y ва Z) гардонем. Хосияти perspective масофаи камераро то объект муайян мекунад (масалан 800px).",
+      purpose: "Сохтани умқ ва воқеияти сеченака бе ягон китобхонаи беруна.",
+      usage: "perspective ба унсури волид ва transform: rotateY(25deg) translateZ(20px) ба фарзанд дода мешавад.",
+      syntax: ".scene { perspective: 800px; }\n.card { transform: rotateY(20deg) rotateX(10deg); }",
+      shortExample: "transform: perspective(600px) rotateY(30deg);",
+      fullExample: "<div style=\"perspective:700px;padding:20px;\">\n  <div style=\"width:180px;padding:18px;background:linear-gradient(135deg,#2563eb,#06b6d4);color:#fff;border-radius:12px;transform:rotateY(22deg) rotateX(8deg);font-family:sans-serif;font-weight:700;\">Корти 3D</div>\n</div>",
+      outputText: "Корти кабуд дар фазои 3D бо кунҷи амиқ гардонида мешавад.",
+      previewHtml: "<div style='perspective:700px;padding:16px;'><div style='width:180px;padding:18px;background:linear-gradient(135deg,#2563eb,#06b6d4);color:#fff;border-radius:12px;transform:rotateY(22deg) rotateX(8deg);font-family:sans-serif;font-weight:700;'>Корти 3D</div></div>",
+      mistakes: "Фаромӯш кардани perspective — бе он rotateY танҳо фишурдани ҳамвор ба назар мерасад.",
+      tip: "Қиммати perspective байни 600px ва 1000px намуди табииро медиҳад.",
+      taskPrompt: "Ба .scene хосияти perspective: 800px; ва ба .box хосияти transform: rotateY(25deg); диҳед.",
+      starterCode: ".scene { }\n.box { }",
+      hint: ".scene { perspective: 800px; } .box { transform: rotateY(25deg); }",
+      expectedTokens: ["perspective:", "rotateY("]
+    },
+    {
+      id: "css3d-flip-card",
+      name: "Preserve-3D, Backface Visibility ва Flip Card",
+      lang: "CSS",
+      group: "Тарроҳии 3D",
+      course: 6,
+      description: "transform-style: preserve-3d фарзандонро дар фазои 3D нигоҳ медорад. backface-visibility: hidden пушти корти чархзанандаро пинҳон мекунад, то Flip Card (корти дутарафа) сохта шавад.",
+      purpose: "Сохтани кортҳои интерактивии дутарафа, флеш-кортҳо ва менюҳои 3D.",
+      usage: "Дар кортҳои омӯзишӣ ва намоиши маълумоти иловагӣ ҳангоми :hover.",
+      syntax: ".inner { transform-style: preserve-3d; transition: transform 0.6s; }\n.face { backface-visibility: hidden; }",
+      shortExample: ".card:hover .inner { transform: rotateY(180deg); }",
+      fullExample: "<style>\n.fc{perspective:800px;width:180px;height:90px;}.fi{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:0.6s;}.fc:hover .fi{transform:rotateY(180deg);}.ff,.fb{position:absolute;inset:0;display:grid;place-items:center;border-radius:10px;backface-visibility:hidden;color:#fff;font-family:sans-serif;font-weight:700;}.ff{background:#2563eb;}.fb{background:#0f172a;transform:rotateY(180deg);}\n</style>\n<div class=\"fc\"><div class=\"fi\"><div class=\"ff\">Рӯи корт (Hover)</div><div class=\"fb\">Пушти корт!</div></div></div>",
+      outputText: "Ҳангоми бурдани муш ба рӯи корт, он 180 дараҷа гардиш карда тарафи дигарашро нишон медиҳад.",
+      previewHtml: "<style>.fc{perspective:800px;width:190px;height:84px;}.fi{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:0.6s;}.fc:hover .fi{transform:rotateY(180deg);}.ff,.fb{position:absolute;inset:0;display:grid;place-items:center;border-radius:10px;backface-visibility:hidden;color:#fff;font-family:sans-serif;font-weight:700;}.ff{background:#2563eb;}.fb{background:#0f172a;border:1px solid #38bdf8;transform:rotateY(180deg);}</style><div class='fc'><div class='fi'><div class='ff'>Рӯи корт (Hover)</div><div class='fb'>Пушти корт!</div></div></div>",
+      mistakes: "Фаромӯш кардани backface-visibility: hidden — он гоҳ ҳар ду тарафи корт омехта мешаванд.",
+      tip: "Барои оптимизатсияи суръат дар телефон танҳо transform ва opacity-ро аниматсия кунед.",
+      taskPrompt: "Ба .inner хосияти transform-style: preserve-3d; ва ба .face хосияти backface-visibility: hidden; диҳед.",
+      starterCode: ".inner { }\n.face { }",
+      hint: "transform-style: preserve-3d; ва backface-visibility: hidden;",
+      expectedTokens: ["preserve-3d", "backface-visibility"]
+    },
+    {
+      id: "threejs-intro-scene",
+      name: "Three.js: Саҳна, Камера, Нур, Геометрия ва Сайёра",
+      lang: "JavaScript",
+      group: "Тарроҳии 3D",
+      course: 6,
+      description: "Three.js китобхонаи машҳури 3D барои WebGL мебошад. Барои сохтани саҳнаи 3D 4 қисми асосӣ лозим аст: Scene (саҳна), Camera (камера), Renderer (тасвирсоз) ва Mesh (Геометрия + Материал) ҳамроҳ бо Light (нур). Барои кори 100% офлайн бе файлҳои вазнин мо инчунин метавонем бо HTML5 Canvas 2D/3D сайёраи гарданда созем.",
+      purpose: "Сохтани графикаи воқеии 3D, сайёраҳо, бозиҳо ва сайтҳои интерактивӣ.",
+      usage: "Дар Three.js: new THREE.Scene(), new THREE.PerspectiveCamera(), new THREE.SphereGeometry(), new THREE.MeshStandardMaterial().",
+      syntax: "const scene = new THREE.Scene();\nconst camera = new THREE.PerspectiveCamera(75, w / h, 0.1, 1000);\nconst planet = new THREE.Mesh(new THREE.SphereGeometry(1, 32, 32), material);",
+      shortExample: "function animate() { requestAnimationFrame(animate); planet.rotation.y += 0.01; }",
+      fullExample: "<canvas id=\"c3d\" width=\"240\" height=\"110\" style=\"background:#050b18;border-radius:10px;\"></canvas>\n<script>\n  // Намунаи сайёраи 3D офлайн бо Canvas (бе вобастагӣ аз CDN)\n  const ctx = document.getElementById('c3d').getContext('2d');\n  let a = 0;\n  function loop() {\n    ctx.clearRect(0, 0, 240, 110);\n    ctx.beginPath();\n    ctx.arc(120, 55, 28, 0, Math.PI * 2);\n    ctx.fillStyle = '#2563eb';\n    ctx.fill();\n    ctx.beginPath();\n    ctx.ellipse(120, 55, 56, 16, Math.sin(a) * 0.25, 0, Math.PI * 2);\n    ctx.strokeStyle = '#38bdf8';\n    ctx.lineWidth = 2;\n    ctx.stroke();\n    a += 0.04;\n    requestAnimationFrame(loop);\n  }\n  loop();\n<\/script>",
+      outputText: "Сайёраи кабуд бо ҳалқаи гарданда дар Canvas-и торик аниматсия мешавад.",
+      previewHtml: "<canvas id='c3' width='240' height='110' style='background:#050b18;border-radius:10px;'></canvas><script>const ctx=document.getElementById('c3').getContext('2d');let a=0;function l(){ctx.clearRect(0,0,240,110);ctx.beginPath();ctx.arc(120,55,26,0,Math.PI*2);ctx.fillStyle='#2563eb';ctx.fill();ctx.beginPath();ctx.ellipse(120,55,54,15,Math.sin(a)*0.25,0,Math.PI*2);ctx.strokeStyle='#38bdf8';ctx.lineWidth=2;ctx.stroke();a+=0.04;requestAnimationFrame(l);}l();<\/script>",
+      mistakes: "Фаромӯш кардани илова кардани Light ба саҳна — дар ин ҳолат MeshStandardMaterial сиёҳ мемонад.",
+      tip: "Ҳангоми кори офлайн дар телефон аниматсияҳоро бо requestAnimationFrame ва андозаи мувофиқи canvas оптимизатсия кунед.",
+      taskPrompt: "Функсияи animate() нависед, ки бо requestAnimationFrame(animate) даъват шавад.",
+      starterCode: "let angle = 0;\nfunction animate() {\n  angle += 0.02;\n  // requestAnimationFrame илова кунед\n}",
+      hint: "Дар охири функсия requestAnimationFrame(animate); нависед.",
+      expectedTokens: ["function animate", "requestAnimationFrame"]
+    }
+  ];
+
+  const GLOSSARY_ITEMS = [
+    { term: "Element", lang: "HTML", desc: "Унсури пурраи HTML (аз теги кушоянда то пӯшанда, мисли <p>Матн</p>)." },
+    { term: "Attribute", lang: "HTML", desc: "Хусусияти иловагӣ дар дохили теги кушоянда (масалан href, src, class, id)." },
+    { term: "Semantic HTML", lang: "HTML", desc: "Тегҳои маънодор ба мисли <header>, <nav>, <main>, <article>, <footer>." },
+    { term: "Selector", lang: "CSS", desc: "Интихобкунандаи унсури HTML дар CSS (тег, .класс, #id)." },
+    { term: "Box Model", lang: "CSS", desc: "Сохтори қуттии ҳар унсур: Content, Padding, Border ва Margin." },
+    { term: "Flexbox", lang: "CSS", desc: "Низоми якченакаи ҷойгирсозии унсурҳо дар сатр ё сутун." },
+    { term: "CSS Grid", lang: "CSS", desc: "Низоми дученакаи (сатрҳо ва сутунҳо) сохтани сеткаи саҳифа." },
+    { term: "Responsive", lang: "CSS", desc: "Мутобиқшаванда — тарҳе, ки дар телефон, планшет ва компютер дуруст менамояд." },
+    { term: "Perspective", lang: "CSS", desc: "Масофаи дид барои эҷоди умқи воқеии 3D дар CSS." },
+    { term: "Variable", lang: "JavaScript", desc: "Тағйирёбанда — зарфи нигоҳдории маълумот дар хотира (let, const)." },
+    { term: "Function", lang: "JavaScript", desc: "Функсия — блоки коди номдор барои иҷрои вазифаи такроршаванда." },
+    { term: "Array", lang: "JavaScript", desc: "Массив — рӯйхати мураттаби қимматҳо дар қавси [ ]." },
+    { term: "Object", lang: "JavaScript", desc: "Объект — маҷмӯи ҷуфтҳои калид ва қиммат дар қавси { }." },
+    { term: "DOM", lang: "JavaScript", desc: "Document Object Model — сохтори дарахтии саҳифа барои идора бо JS." },
+    { term: "Event", lang: "JavaScript", desc: "Ҳодиса — амали корбар ё браузер (click, input, submit)." },
+    { term: "LocalStorage", lang: "JavaScript", desc: "Хотираи доимии маҳаллӣ дар браузер, ки бе интернет кор мекунад." },
+    { term: "JSON", lang: "JavaScript", desc: "Формати матнии мубодила ва захираи маълумот (stringify / parse)." },
+    { term: "Promise", lang: "JavaScript", desc: "Ваъда — объекти идоракунии натиҷаи ояндаи амалҳои асинхронӣ." },
+    { term: "API Key", lang: "JavaScript", desc: "Калиди шахсии дастрасӣ ба хидматҳои беруна (масалан Gemini API)." },
+    { term: "PWA", lang: "HTML", desc: "Progressive Web App — веббарномае, ки дар телефон насб шуда офлайн кор мекунад." }
+  ];
+
+  const EXAM_QUESTIONS = [
+    {
+      q: "1. Барои намоиши дурусти ҳарфҳои тоҷикӣ дар HTML кадом тег дар <head> ҳатмӣ аст?",
+      options: ["<meta charset=\"UTF-8\">", "<title>UTF-8</title>", "<body lang=\"tg\">"],
+      answer: 0
+    },
+    {
+      q: "2. Кадом хосияти CSS padding ва border-ро ба дохили width ҳисоб мекунад?",
+      options: ["display: flex;", "box-sizing: border-box;", "position: relative;"],
+      answer: 1
+    },
+    {
+      q: "3. Дар JavaScript барои пешгирии боркунии дубораи саҳифа ҳангоми submit-и форма чӣ менависанд?",
+      options: ["event.stop()", "event.preventDefault()", "return false"],
+      answer: 1
+    },
+    {
+      q: "4. Чаро дар интерфейси касбӣ ба ҷои эмодзи SVG истифода мешавад?",
+      options: ["SVG дар ҳама системаҳо шакли ягона ва сифати тез дорад", "SVG танҳо бо интернет кор мекунад", "Эмодзи дар HTML манъ аст"],
+      answer: 0
+    },
+    {
+      q: "5. Барои он ки дар CSS 3D унсур умқи сеченака дошта бошад, кадом хосият ба волид дода мешавад?",
+      options: ["z-index: 100;", "perspective: 800px;", "overflow: hidden;"],
+      answer: 1
+    }
+  ];
+
+  const BADGES_DEF = [
+    { id: "b-first", title: "Қадами аввал", desc: "Аввалин дарсро бо муваффақият анҷом диҳед", check: (s) => s.learned.length >= 1 },
+    { id: "b-html", title: "Устоди сохтор (HTML)", desc: "Ҳадди ақал 15 дарси HTML-ро гузаред", check: (s) => s.learned.filter(id => id.startsWith("html-")).length >= 15 },
+    { id: "b-css", title: "Дизайнери CSS", desc: "Ҳадди ақал 10 дарси CSS-ро гузаред", check: (s) => s.learned.filter(id => id.startsWith("css-")).length >= 10 },
+    { id: "b-js", title: "Муҳандиси JavaScript", desc: "Ҳадди ақал 10 дарси JavaScript-ро гузаред", check: (s) => s.learned.filter(id => id.startsWith("js-")).length >= 10 },
+    { id: "b-studio", title: "Созандаи лоиҳа", desc: "Дар Web Academy Studio лоиҳа созед", check: (s) => s.projects.length >= 2 },
+    { id: "b-grad", title: "Хатмкардаи Web Academy", desc: "Имтиҳони ниҳоии дохилиро супоред", check: (s) => s.examPassed === true }
+  ];
+
+  const ALL_LESSONS = LESSONS.concat(EXTRA_LESSONS).map((lesson) => {
+    let course = lesson.course;
+    if (!course) {
+      if (lesson.lang === "HTML") course = 1;
+      else if (lesson.lang === "CSS") course = 2;
+      else course = 3;
+    }
+    const taskPrompt = lesson.taskPrompt || `Бо истифода аз «${lesson.name}» коди коршоямро дар поён нависед ва санҷед.`;
+    const starterCode = lesson.starterCode || (lesson.lang === "HTML"
+      ? `<!-- Вазифа барои ${lesson.name} -->\n`
+      : lesson.lang === "CSS"
+        ? `/* Вазифа барои ${lesson.name} */\n.box {\n  \n}`
+        : `// Вазифа барои ${lesson.name}\n`);
+    const hint = lesson.hint || `Ба бахши «Синтаксиси дуруст» нигаред: ${lesson.syntax.split("\n")[0]}`;
+    return Object.assign({}, lesson, { course, taskPrompt, starterCode, hint });
+  });
+
+  const COURSES = [
+    { id: 1, title: "1. HTML — Асосҳо то сатҳи пешрафта", desc: "Сохтори саҳифа, матн, расм, ҷадвал, формҳо, Semantic HTML ва SEO.", lang: "HTML" },
+    { id: 2, title: "2. CSS — Ороиш ва тарроҳии муосир", desc: "Селекторҳо, Box Model, Flexbox, Grid, аниматсияҳо ва Responsive.", lang: "CSS" },
+    { id: 3, title: "3. JavaScript — Мантиқ ва интерактивӣ", desc: "Тағйирёбандаҳо, функсияҳо, массивҳо, DOM, Events, Async ва API.", lang: "JavaScript" },
+    { id: 4, title: "4. Ҷудо кардани файлҳо ва сохтори лоиҳа", desc: "Ташкили index.html, style.css, script.js, папкаҳои images/ ва assets/.", lang: "HTML" },
+    { id: 5, title: "5. Тарроҳии премиум ва тугмаҳои бе эмодзи", desc: "SVG, Gradient, Glassmorphism, Neumorphism, 3D ва тугмаҳои мобилӣ.", lang: "CSS" },
+    { id: 6, title: "6. CSS-и пешрафта, 3D ва Three.js", desc: "Perspective, RotateX/Y/Z, Flip Card, саҳнаи 3D ва асосҳои Three.js.", lang: "CSS" }
+  ];
+
+  const STORAGE_KEYS = {
+    theme: "wa_theme_v1",
+    welcomeSeen: "wa_welcome_seen_v1",
+    favorites: "wa_favorites_v1",
+    learned: "wa_learned_v1",
+    fontSize: "wa_code_font_v1",
+    openFolders: "wa_open_folders_v1",
+    xp: "wa_xp_v1",
+    daily: "wa_daily_v1",
+    streak: "wa_streak_v1",
+    projects: "wa_projects_v1",
+    activeProjectId: "wa_active_proj_v1",
+    examPassed: "wa_exam_passed_v1",
+    taskDrafts: "wa_task_drafts_v1",
+    aiKeyOptIn: "wa_ai_key_optin_v1"
+  };
+
+  function createDefaultProject() {
+    return {
+      id: "proj-" + Date.now(),
+      name: "Лоиҳаи аввалини ман",
+      updatedAt: new Date().toISOString(),
+      files: {
+        "index.html": "<!DOCTYPE html>\n<html lang=\"tg\">\n<head>\n  <meta charset=\"UTF-8\">\n  <title>Лоиҳаи ман</title>\n</head>\n<body>\n  <div class=\"card\">\n    <h1>Салом, WEB ACADEMY!</h1>\n    <p>Ин аввалин лоиҳаи ман дар Studio аст.</p>\n    <button id=\"demoBtn\">Пахш кунед</button>\n  </div>\n</body>\n</html>",
+        "style.css": "body {\n  font-family: system-ui, sans-serif;\n  background: #050b18;\n  color: #f8fafc;\n  display: grid;\n  place-items: center;\n  min-height: 90vh;\n  margin: 0;\n}\n.card {\n  background: #0b1426;\n  border: 1px solid #2563eb;\n  border-radius: 14px;\n  padding: 22px;\n  text-align: center;\n}\nbutton {\n  background: #2563eb;\n  color: #fff;\n  border: none;\n  padding: 10px 18px;\n  border-radius: 8px;\n  cursor: pointer;\n  font-weight: 700;\n}",
+        "script.js": "const btn = document.getElementById('demoBtn');\nlet count = 0;\nif (btn) {\n  btn.addEventListener('click', () => {\n    count++;\n    btn.textContent = 'Пахш шуд: ' + count;\n  });\n}"
+      }
+    };
+  }
+
   const state = {
-    theme: "light",
+    theme: "dark",
     codeFontSize: "14.5",
     favorites: [],
     learned: [],
     openFolders: {},
     treeLang: "ALL",
-    currentView: "home", // home | list | lesson
-    listMode: "ALL", // ALL | HTML | CSS | JavaScript | favorites | learned | search
+    currentView: "home",
+    listMode: "ALL",
     searchQuery: "",
-    filterLang: "ALL",
+    filterCourse: "ALL",
     filterGroup: "ALL",
     activeLessonId: null,
-    lastListMode: "home"
+    lastListMode: "home",
+    xp: 0,
+    daily: { date: "", count: 0 },
+    streak: { lastDate: "", count: 1 },
+    examPassed: false,
+    taskDrafts: {},
+    projects: [],
+    activeProjectId: null,
+    activeStudioFile: "index.html",
+    undoStack: [],
+    redoStack: [],
+    aiSessionKey: "",
+    aiModels: [],
+    aiSelectedModel: "",
+    aiHistory: [],
+    deferredInstallPrompt: null
   };
 
   /* -------------------- ИШОРА БА УНСУРҲОИ DOM -------------------- */
   const dom = {
     htmlEl: document.documentElement,
+    splashOverlay: document.getElementById("splashOverlay"),
+    welcomeOverlay: document.getElementById("welcomeOverlay"),
+    startWelcomeBtn: document.getElementById("startWelcomeBtn"),
     menuToggleBtn: document.getElementById("menuToggleBtn"),
     closeSidebarBtn: document.getElementById("closeSidebarBtn"),
     sidebar: document.getElementById("sidebar"),
@@ -1759,9 +2122,11 @@
     logoBtn: document.getElementById("logoBtn"),
     searchInput: document.getElementById("searchInput"),
     clearSearchBtn: document.getElementById("clearSearchBtn"),
+    installPwaBtn: document.getElementById("installPwaBtn"),
     themeToggleBtn: document.getElementById("themeToggleBtn"),
     sunIcon: document.getElementById("sunIcon"),
     moonIcon: document.getElementById("moonIcon"),
+    profileAboutBtn: document.getElementById("profileAboutBtn"),
     settingsBtn: document.getElementById("settingsBtn"),
 
     navPills: document.querySelectorAll(".nav-pill"),
@@ -1771,29 +2136,30 @@
     dashboardView: document.getElementById("dashboardView"),
     listView: document.getElementById("listView"),
     lessonView: document.getElementById("lessonView"),
+    studioView: document.getElementById("studioView"),
+    aiView: document.getElementById("aiView"),
+    projectsView: document.getElementById("projectsView"),
+    glossaryView: document.getElementById("glossaryView"),
+    achievementsView: document.getElementById("achievementsView"),
+    aboutView: document.getElementById("aboutView"),
 
-    startLearningBtn: document.getElementById("startLearningBtn"),
-    browseAllBtn: document.getElementById("browseAllBtn"),
+    networkStatusBadge: document.getElementById("networkStatusBadge"),
+    heroXpCount: document.getElementById("heroXpCount"),
+    heroStreakCount: document.getElementById("heroStreakCount"),
+    dailyGoalText: document.getElementById("dailyGoalText"),
+    continueLearningBtn: document.getElementById("continueLearningBtn"),
+    openStudioFromHeroBtn: document.getElementById("openStudioFromHeroBtn"),
+    openAiFromHeroBtn: document.getElementById("openAiFromHeroBtn"),
     overallPercentText: document.getElementById("overallPercentText"),
     overallProgressFill: document.getElementById("overallProgressFill"),
     heroLearnedCount: document.getElementById("heroLearnedCount"),
     heroTotalCount: document.getElementById("heroTotalCount"),
     heroFavCount: document.getElementById("heroFavCount"),
-    htmlPercentText: document.getElementById("htmlPercentText"),
-    htmlProgressFill: document.getElementById("htmlProgressFill"),
-    htmlStatsText: document.getElementById("htmlStatsText"),
-    cssPercentText: document.getElementById("cssPercentText"),
-    cssProgressFill: document.getElementById("cssProgressFill"),
-    cssStatsText: document.getElementById("cssStatsText"),
-    jsPercentText: document.getElementById("jsPercentText"),
-    jsProgressFill: document.getElementById("jsProgressFill"),
-    jsStatsText: document.getElementById("jsStatsText"),
-    openLangBtns: document.querySelectorAll("[data-open-lang]"),
-    recommendedGrid: document.getElementById("recommendedGrid"),
+    coursesGrid: document.getElementById("coursesGrid"),
 
     listViewTitle: document.getElementById("listViewTitle"),
     listViewSubtitle: document.getElementById("listViewSubtitle"),
-    langFilterSelect: document.getElementById("langFilterSelect"),
+    courseFilterSelect: document.getElementById("courseFilterSelect"),
     groupFilterSelect: document.getElementById("groupFilterSelect"),
     lessonCardsGrid: document.getElementById("lessonCardsGrid"),
     emptyListState: document.getElementById("emptyListState"),
@@ -1804,10 +2170,8 @@
     backToListBtn: document.getElementById("backToListBtn"),
     lessonBreadcrumbText: document.getElementById("lessonBreadcrumbText"),
     toggleFavoriteBtn: document.getElementById("toggleFavoriteBtn"),
-    favBtnIcon: document.getElementById("favBtnIcon"),
     favBtnText: document.getElementById("favBtnText"),
-    toggleLearnedBtn: document.getElementById("toggleLearnedBtn"),
-    learnedBtnText: document.getElementById("learnedBtnText"),
+    lessonStatusBadge: document.getElementById("lessonStatusBadge"),
     lessonLangBadge: document.getElementById("lessonLangBadge"),
     lessonGroupBadge: document.getElementById("lessonGroupBadge"),
     lessonTitle: document.getElementById("lessonTitle"),
@@ -1816,6 +2180,16 @@
     lessonUsage: document.getElementById("lessonUsage"),
     lessonSyntaxCode: document.getElementById("lessonSyntaxCode"),
     lessonShortCode: document.getElementById("lessonShortCode"),
+    lessonTaskPrompt: document.getElementById("lessonTaskPrompt"),
+    showHintBtn: document.getElementById("showHintBtn"),
+    resetTaskBtn: document.getElementById("resetTaskBtn"),
+    lessonHintBox: document.getElementById("lessonHintBox"),
+    lessonHintText: document.getElementById("lessonHintText"),
+    lessonCodeEditor: document.getElementById("lessonCodeEditor"),
+    checkTaskBtn: document.getElementById("checkTaskBtn"),
+    toggleSolutionBtn: document.getElementById("toggleSolutionBtn"),
+    taskFeedbackBox: document.getElementById("taskFeedbackBox"),
+    lessonSolutionSection: document.getElementById("lessonSolutionSection"),
     lessonFullCode: document.getElementById("lessonFullCode"),
     lessonOutputText: document.getElementById("lessonOutputText"),
     lessonPreviewFrame: document.getElementById("lessonPreviewFrame"),
@@ -1824,33 +2198,88 @@
     prevLessonBtn: document.getElementById("prevLessonBtn"),
     nextLessonBtn: document.getElementById("nextLessonBtn"),
 
+    studioProjectSelect: document.getElementById("studioProjectSelect"),
+    studioNewProjectBtn: document.getElementById("studioNewProjectBtn"),
+    studioExportProjectBtn: document.getElementById("studioExportProjectBtn"),
+    studioUndoBtn: document.getElementById("studioUndoBtn"),
+    studioRedoBtn: document.getElementById("studioRedoBtn"),
+    studioFindToggleBtn: document.getElementById("studioFindToggleBtn"),
+    studioClearFileBtn: document.getElementById("studioClearFileBtn"),
+    studioRunBtn: document.getElementById("studioRunBtn"),
+    studioFindBar: document.getElementById("studioFindBar"),
+    studioFindInput: document.getElementById("studioFindInput"),
+    studioReplaceInput: document.getElementById("studioReplaceInput"),
+    studioReplaceAllBtn: document.getElementById("studioReplaceAllBtn"),
+    studioFindCloseBtn: document.getElementById("studioFindCloseBtn"),
+    studioNewFileBtn: document.getElementById("studioNewFileBtn"),
+    studioNewFolderBtn: document.getElementById("studioNewFolderBtn"),
+    studioFileList: document.getElementById("studioFileList"),
+    studioActiveFileName: document.getElementById("studioActiveFileName"),
+    studioRenameFileBtn: document.getElementById("studioRenameFileBtn"),
+    studioDeleteFileBtn: document.getElementById("studioDeleteFileBtn"),
+    studioLineNumbers: document.getElementById("studioLineNumbers"),
+    studioCodeEditor: document.getElementById("studioCodeEditor"),
+    studioPreviewPane: document.getElementById("studioPreviewPane"),
+    studioRerunBtn: document.getElementById("studioRerunBtn"),
+    studioExpandBtn: document.getElementById("studioExpandBtn"),
+    studioPreviewFrame: document.getElementById("studioPreviewFrame"),
+
+    aiApiKeyInput: document.getElementById("aiApiKeyInput"),
+    aiToggleKeyVisBtn: document.getElementById("aiToggleKeyVisBtn"),
+    aiCheckKeyBtn: document.getElementById("aiCheckKeyBtn"),
+    aiClearKeyBtn: document.getElementById("aiClearKeyBtn"),
+    aiModelSelect: document.getElementById("aiModelSelect"),
+    aiPersistKeyCheckbox: document.getElementById("aiPersistKeyCheckbox"),
+    aiStatusLabel: document.getElementById("aiStatusLabel"),
+    aiMessagesBox: document.getElementById("aiMessagesBox"),
+    aiChatForm: document.getElementById("aiChatForm"),
+    aiPromptInput: document.getElementById("aiPromptInput"),
+    aiSendBtn: document.getElementById("aiSendBtn"),
+
+    projectsCreateBtn: document.getElementById("projectsCreateBtn"),
+    projectsImportInput: document.getElementById("projectsImportInput"),
+    projectsGalleryGrid: document.getElementById("projectsGalleryGrid"),
+    glossarySearchInput: document.getElementById("glossarySearchInput"),
+    glossaryGrid: document.getElementById("glossaryGrid"),
+    badgesGrid: document.getElementById("badgesGrid"),
+    examContainer: document.getElementById("examContainer"),
+    certificateBox: document.getElementById("certificateBox"),
+    certStatsText: document.getElementById("certStatsText"),
+
     settingsModal: document.getElementById("settingsModal"),
     closeSettingsBtn: document.getElementById("closeSettingsBtn"),
     modalThemeToggleBtn: document.getElementById("modalThemeToggleBtn"),
     codeFontSizeSelect: document.getElementById("codeFontSizeSelect"),
+    exportBackupBtn: document.getElementById("exportBackupBtn"),
+    importBackupInput: document.getElementById("importBackupInput"),
     resetDataBtn: document.getElementById("resetDataBtn"),
     resetConfirmBox: document.getElementById("resetConfirmBox"),
     confirmResetBtn: document.getElementById("confirmResetBtn"),
     cancelResetBtn: document.getElementById("cancelResetBtn"),
+
+    installModal: document.getElementById("installModal"),
+    closeInstallBtn: document.getElementById("closeInstallBtn"),
+
+    promptModal: document.getElementById("promptModal"),
+    promptModalTitle: document.getElementById("promptModalTitle"),
+    promptModalDesc: document.getElementById("promptModalDesc"),
+    promptModalInput: document.getElementById("promptModalInput"),
+    promptModalForm: document.getElementById("promptModalForm"),
+    closePromptModalBtn: document.getElementById("closePromptModalBtn"),
+    promptModalCancelBtn: document.getElementById("promptModalCancelBtn"),
     toast: document.getElementById("toast")
   };
 
-  /* -------------------- ФУНКСИЯҲОИ ЁРИРАСОН -------------------- */
+  /* -------------------- ЁРИРАСОНҲО -------------------- */
   function readStorage(key, fallback) {
     try {
       const raw = localStorage.getItem(key);
       return raw ? JSON.parse(raw) : fallback;
-    } catch (e) {
-      return fallback;
-    }
+    } catch (e) { return fallback; }
   }
 
   function writeStorage(key, value) {
-    try {
-      localStorage.setItem(key, JSON.stringify(value));
-    } catch (e) {
-      // Дар ҳолати маҳдуд будани storage барнома қатъ намешавад
-    }
+    try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) {}
   }
 
   function escapeHtml(str) {
@@ -1863,26 +2292,55 @@
   }
 
   let toastTimer = null;
-  function showToast(message) {
-    dom.toast.textContent = message;
+  function showToast(msg) {
+    dom.toast.textContent = msg;
     dom.toast.classList.remove("hidden");
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => {
-      dom.toast.classList.add("hidden");
-    }, 2200);
+    toastTimer = setTimeout(() => dom.toast.classList.add("hidden"), 2500);
   }
 
-  function getLangBadgeClass(lang) {
-    if (lang === "HTML") return "badge-html";
-    if (lang === "CSS") return "badge-css";
-    return "badge-js";
+  function getTodayStr() {
+    return new Date().toISOString().slice(0, 10);
   }
 
   function getLessonById(id) {
-    return LESSONS.find((item) => item.id === id) || null;
+    return ALL_LESSONS.find((l) => l.id === id) || null;
   }
 
-  /* -------------------- РАВШАНСОЗИИ СИНТАКСИС (OFFLINE) -------------------- */
+  function isLessonUnlocked(index) {
+    if (index <= 0) return true;
+    const prev = ALL_LESSONS[index - 1];
+    const curr = ALL_LESSONS[index];
+    return state.learned.includes(prev.id) || state.learned.includes(curr.id);
+  }
+
+  function getNextUnlockedLesson() {
+    for (let i = 0; i < ALL_LESSONS.length; i++) {
+      if (!state.learned.includes(ALL_LESSONS[i].id) && isLessonUnlocked(i)) {
+        return ALL_LESSONS[i];
+      }
+    }
+    return ALL_LESSONS[0];
+  }
+
+  /* -------------------- МОДАЛИ УМУМӢ (БЕ prompt/confirm) -------------------- */
+  let promptCallback = null;
+  function openPromptModal(title, desc, defaultValue, showInput, onConfirm) {
+    dom.promptModalTitle.textContent = title;
+    dom.promptModalDesc.textContent = desc || "";
+    dom.promptModalInput.value = defaultValue || "";
+    dom.promptModalInput.classList.toggle("hidden", !showInput);
+    promptCallback = onConfirm;
+    dom.promptModal.classList.remove("hidden");
+    if (showInput) setTimeout(() => dom.promptModalInput.focus(), 50);
+  }
+
+  function closePromptModal() {
+    dom.promptModal.classList.add("hidden");
+    promptCallback = null;
+  }
+
+  /* -------------------- РАВШАНСОЗИИ СИНТАКСИС -------------------- */
   function highlightCode(code, lang) {
     const tokens = [];
     const saveToken = (html) => {
@@ -1890,43 +2348,32 @@
       tokens.push(html);
       return `\u0000T${idx}\u0000`;
     };
-
     let text = escapeHtml(code);
-
     if (lang === "HTML") {
       text = text.replace(/(&lt;!--[\s\S]*?--&gt;)/g, (m) => saveToken(`<span class="tok-com">${m}</span>`));
       text = text.replace(/(&lt;\/?)([a-zA-Z0-9!-]+)([\s\S]*?)(\/?&gt;)/g, (_, open, tag, attrs, close) => {
-        let styledAttrs = attrs.replace(/([a-zA-Z0-9:-]+)(=)(&quot;[^&]*?&quot;|&#39;[^&]*?&#39;)/g, (__, k, eq, v) => {
-          return `<span class="tok-attr">${k}</span>${eq}<span class="tok-val">${v}</span>`;
-        });
+        const styledAttrs = attrs.replace(/([a-zA-Z0-9:-]+)(=)(&quot;[^&]*?&quot;|&#39;[^&]*?&#39;)/g, (__, k, eq, v) =>
+          `<span class="tok-attr">${k}</span>${eq}<span class="tok-val">${v}</span>`);
         return saveToken(`<span class="tok-tag">${open}${tag}</span>${styledAttrs}<span class="tok-tag">${close}</span>`);
       });
     } else if (lang === "CSS") {
       text = text.replace(/(\/\*[\s\S]*?\*\/)/g, (m) => saveToken(`<span class="tok-com">${m}</span>`));
       text = text.replace(/(&quot;[^&]*?&quot;|&#39;[^&]*?&#39;)/g, (m) => saveToken(`<span class="tok-str">${m}</span>`));
-      text = text.replace(/([a-zA-Z-]+)(\s*:)/g, (_, prop, colon) => {
-        return saveToken(`<span class="tok-prop">${prop}</span>${colon}`);
-      });
+      text = text.replace(/([a-zA-Z-]+)(\s*:)/g, (_, prop, colon) => saveToken(`<span class="tok-prop">${prop}</span>${colon}`));
       text = text.replace(/\b(\d+(\.\d+)?(px|rem|em|%|vh|vw|s|ms|deg|fr)?)\b/g, (m) => saveToken(`<span class="tok-num">${m}</span>`));
     } else {
       text = text.replace(/(\/\/[^\n]*|\/\*[\s\S]*?\*\/)/g, (m) => saveToken(`<span class="tok-com">${m}</span>`));
       text = text.replace(/(&quot;[^&\n]*?&quot;|&#39;[^&\n]*?&#39;|`[^`]*?`)/g, (m) => saveToken(`<span class="tok-str">${m}</span>`));
-      const kwRegex = /\b(const|let|var|function|return|if|else|switch|case|default|break|for|while|of|in|try|catch|finally|throw|new|class|extends|super|async|await|import|export|from|typeof|true|false|null|undefined)\b/g;
-      text = text.replace(kwRegex, (m) => saveToken(`<span class="tok-kw">${m}</span>`));
+      text = text.replace(/\b(const|let|var|function|return|if|else|switch|case|default|break|for|while|of|in|try|catch|finally|throw|new|class|extends|super|async|await|import|export|from|typeof|true|false|null|undefined)\b/g, (m) => saveToken(`<span class="tok-kw">${m}</span>`));
       text = text.replace(/\b(\d+(\.\d+)?)\b/g, (m) => saveToken(`<span class="tok-num">${m}</span>`));
       text = text.replace(/\b([a-zA-Z_$][\w$]*)(?=\s*\()/g, (m) => saveToken(`<span class="tok-fn">${m}</span>`));
     }
-
     return text.replace(/\u0000T(\d+)\u0000/g, (_, idx) => tokens[Number(idx)]);
   }
 
-  /* -------------------- НУСХАБАРДОРӢ БО ЭҲТИЁТ -------------------- */
   function copyTextToClipboard(text) {
     if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
-      navigator.clipboard.writeText(text).then(
-        () => showToast("Нусха шуд!"),
-        () => fallbackCopy(text)
-      );
+      navigator.clipboard.writeText(text).then(() => showToast("Нусха шуд!"), () => fallbackCopy(text));
     } else {
       fallbackCopy(text);
     }
@@ -1934,32 +2381,24 @@
 
   function fallbackCopy(text) {
     try {
-      const textarea = document.createElement("textarea");
-      textarea.value = text;
-      textarea.setAttribute("readonly", "");
-      textarea.style.position = "fixed";
-      textarea.style.left = "-9999px";
-      document.body.appendChild(textarea);
-      textarea.select();
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.left = "-9999px";
+      document.body.appendChild(ta);
+      ta.select();
       const ok = document.execCommand("copy");
-      document.body.removeChild(textarea);
+      document.body.removeChild(ta);
       showToast(ok ? "Нусха шуд!" : "Нусхабардорӣ дастгирӣ нашуд");
-    } catch (e) {
-      showToast("Нусхабардорӣ дастгирӣ нашуд");
-    }
+    } catch (e) { showToast("Нусхабардорӣ дастгирӣ нашуд"); }
   }
 
-  /* -------------------- ТАНЗИМОТИ НАМУД (THEME) -------------------- */
+  /* -------------------- РЕҶАИ ШАБОНА / РӮЗОНА -------------------- */
   function applyTheme(theme) {
-    state.theme = theme === "dark" ? "dark" : "light";
+    state.theme = theme === "light" ? "light" : "dark";
     dom.htmlEl.setAttribute("data-theme", state.theme);
-    if (state.theme === "dark") {
-      dom.sunIcon.classList.remove("hidden");
-      dom.moonIcon.classList.add("hidden");
-    } else {
-      dom.sunIcon.classList.add("hidden");
-      dom.moonIcon.classList.remove("hidden");
-    }
+    dom.sunIcon.classList.toggle("hidden", state.theme === "light");
+    dom.moonIcon.classList.toggle("hidden", state.theme === "dark");
     writeStorage(STORAGE_KEYS.theme, state.theme);
   }
 
@@ -1970,41 +2409,46 @@
     writeStorage(STORAGE_KEYS.fontSize, state.codeFontSize);
   }
 
-  /* -------------------- ДАРАХТИ ПАПКАҲО (FILE EXPLORER) -------------------- */
-  function getFolderKey(lang, group) {
-    return `${lang}::${group}`;
+  /* -------------------- ДАРАХТИ 6 КУРС ВА ҚУЛФИ ПАЙДАРПАЙ -------------------- */
+  function getFolderKey(courseId, group) {
+    return `${courseId}::${group}`;
   }
 
   function renderExplorerTree() {
-    const langs = state.treeLang === "ALL" ? ["HTML", "CSS", "JavaScript"] : [state.treeLang];
     let html = "";
+    const filteredCourses = state.treeLang === "ALL"
+      ? COURSES
+      : COURSES.filter((c) => c.lang === state.treeLang);
 
-    langs.forEach((lang) => {
-      const langLessons = LESSONS.filter((l) => l.lang === lang);
-      const groups = [...new Set(langLessons.map((l) => l.group))];
+    filteredCourses.forEach((course) => {
+      const courseLessons = ALL_LESSONS.filter((l) => l.course === course.id);
+      const groups = [...new Set(courseLessons.map((l) => l.group))];
 
       html += `<div class="tree-lang-section">`;
-      html += `<div class="tree-lang-heading"><span>${escapeHtml(lang)}</span><span>${langLessons.length}</span></div>`;
+      html += `<div class="tree-lang-heading"><span>Курси ${course.id}: ${escapeHtml(course.lang)}</span><span>${courseLessons.length}</span></div>`;
 
       groups.forEach((group) => {
-        const fKey = getFolderKey(lang, group);
-        const isOpen = state.openFolders[fKey] !== false; // Пешфарз: кушода
-        const groupLessons = langLessons.filter((l) => l.group === group);
+        const fKey = getFolderKey(course.id, group);
+        const isOpen = state.openFolders[fKey] !== false;
+        const groupLessons = courseLessons.filter((l) => l.group === group);
 
         html += `<div class="tree-folder ${isOpen ? "open" : ""}" data-folder-key="${escapeHtml(fKey)}">`;
         html += `<button type="button" class="tree-folder-btn" aria-expanded="${isOpen}">`;
-        html += `<svg class="tree-chevron" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 18 15 12 9 6"></polyline></svg>`;
-        html += `<span>${escapeHtml(group)}</span>`;
-        html += `</button>`;
-        html += `<div class="tree-folder-items">`;
+        html += `<svg class="tree-chevron" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 18 15 12 9 6"></polyline></svg>`;
+        html += `<span>${escapeHtml(group)}</span></button><div class="tree-folder-items">`;
 
         groupLessons.forEach((lesson) => {
+          const globalIdx = ALL_LESSONS.findIndex((x) => x.id === lesson.id);
+          const unlocked = isLessonUnlocked(globalIdx);
           const isActive = state.currentView === "lesson" && state.activeLessonId === lesson.id;
           const isLearned = state.learned.includes(lesson.id);
-          html += `<button type="button" class="tree-item-btn ${isActive ? "active" : ""}" data-lesson-id="${escapeHtml(lesson.id)}">`;
+
+          html += `<button type="button" class="tree-item-btn ${isActive ? "active" : ""} ${unlocked ? "" : "locked"}" data-lesson-id="${escapeHtml(lesson.id)}">`;
           html += `<span>${escapeHtml(lesson.name)}</span>`;
           if (isLearned) {
-            html += `<span class="tree-item-done" title="Омӯхта шудааст">&#10003;</span>`;
+            html += `<span class="tree-item-done" title="Гузашта шуд">&#10003;</span>`;
+          } else if (!unlocked) {
+            html += `<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`;
           }
           html += `</button>`;
         });
@@ -2016,328 +2460,642 @@
     });
 
     dom.explorerTree.innerHTML = html;
-    updateToggleAllButtonLabel();
-  }
-
-  function updateToggleAllButtonLabel() {
     const folderEls = dom.explorerTree.querySelectorAll(".tree-folder");
     const anyOpen = Array.from(folderEls).some((el) => el.classList.contains("open"));
     dom.toggleAllFoldersBtn.textContent = anyOpen ? "Ҳамаро пӯш" : "Ҳамаро кушо";
   }
 
-  function toggleSidebarMobile(open) {
-    if (open) {
-      dom.sidebar.classList.add("open");
-      dom.sidebarBackdrop.classList.remove("hidden");
-    } else {
-      dom.sidebar.classList.remove("open");
-      dom.sidebarBackdrop.classList.add("hidden");
-    }
+  /* -------------------- ПЕШРАФТ, XP, STREAK ВА КУРСҲО -------------------- */
+  function updateNetworkBadge() {
+    const online = navigator.onLine;
+    dom.networkStatusBadge.textContent = online ? "Онлайн (AI дастрас)" : "Офлайн (100% фаъол)";
   }
 
-  /* -------------------- ПЕШРАФТ ВА ОМОР -------------------- */
   function updateProgressUI() {
-    const total = LESSONS.length;
+    const total = ALL_LESSONS.length;
     const learnedCount = state.learned.filter((id) => getLessonById(id)).length;
     const favCount = state.favorites.filter((id) => getLessonById(id)).length;
-    const overallPct = total ? Math.round((learnedCount / total) * 100) : 0;
+    const pct = total ? Math.round((learnedCount / total) * 100) : 0;
 
-    dom.overallPercentText.textContent = `${overallPct}%`;
-    dom.overallProgressFill.style.width = `${overallPct}%`;
+    dom.overallPercentText.textContent = `${pct}%`;
+    dom.overallProgressFill.style.width = `${pct}%`;
     dom.heroLearnedCount.textContent = learnedCount;
     dom.heroTotalCount.textContent = total;
     dom.heroFavCount.textContent = favCount;
-
+    dom.heroXpCount.textContent = state.xp;
+    dom.heroStreakCount.textContent = state.streak.count || 1;
+    dom.dailyGoalText.textContent = `${Math.min(state.daily.count, 3)} / 3 дарс`;
     dom.favCountBadge.textContent = favCount;
     dom.learnedCountBadge.textContent = learnedCount;
 
-    const updateLangStat = (lang, pctEl, fillEl, statsEl) => {
-      const list = LESSONS.filter((l) => l.lang === lang);
+    renderCoursesGrid();
+  }
+
+  function renderCoursesGrid() {
+    let html = "";
+    COURSES.forEach((c) => {
+      const list = ALL_LESSONS.filter((l) => l.course === c.id);
       const done = list.filter((l) => state.learned.includes(l.id)).length;
       const pct = list.length ? Math.round((done / list.length) * 100) : 0;
-      pctEl.textContent = `${pct}%`;
-      fillEl.style.width = `${pct}%`;
-      statsEl.textContent = `${done} / ${list.length} дарс`;
-    };
-
-    updateLangStat("HTML", dom.htmlPercentText, dom.htmlProgressFill, dom.htmlStatsText);
-    updateLangStat("CSS", dom.cssPercentText, dom.cssProgressFill, dom.cssStatsText);
-    updateLangStat("JavaScript", dom.jsPercentText, dom.jsProgressFill, dom.jsStatsText);
-  }
-
-  /* -------------------- КОРТҲОИ ДАРС -------------------- */
-  function createLessonCardHTML(lesson) {
-    const isFav = state.favorites.includes(lesson.id);
-    const isLearned = state.learned.includes(lesson.id);
-    return `
-      <article class="lesson-card" data-lesson-id="${escapeHtml(lesson.id)}" tabindex="0" role="button">
-        <div class="lesson-card-top">
-          <div>
-            <span class="lang-badge ${getLangBadgeClass(lesson.lang)}">${escapeHtml(lesson.lang)}</span>
-            <span class="group-badge">${escapeHtml(lesson.group)}</span>
+      const badgeCls = c.lang === "HTML" ? "badge-html" : c.lang === "CSS" ? "badge-css" : "badge-js";
+      html += `
+        <article class="course-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span class="lang-badge ${badgeCls}">${escapeHtml(c.lang)}</span>
+            <strong>${pct}%</strong>
           </div>
-          <div class="lesson-card-status">
-            ${isFav ? '<span title="Мунтахаб" style="color:#eab308;">&#9733;</span>' : ""}
-            ${isLearned ? '<span title="Омӯхта шуд" style="color:var(--success);font-weight:700;">&#10003;</span>' : ""}
+          <h3 style="margin:0;font-size:1rem;">${escapeHtml(c.title)}</h3>
+          <p class="muted-text" style="margin:0;flex:1;">${escapeHtml(c.desc)}</p>
+          <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;">
+            <span class="muted-text">${done} / ${list.length} дарс</span>
+            <button type="button" class="btn btn-sm btn-outline open-course-btn" data-course-id="${c.id}">Кушодан</button>
           </div>
-        </div>
-        <h3>${escapeHtml(lesson.name)}</h3>
-        <p>${escapeHtml(lesson.description)}</p>
-      </article>
-    `;
-  }
-
-  function renderRecommendedDashboard() {
-    const sampleIds = ["html-doctype", "html-h1", "html-form", "css-flexbox", "css-grid", "js-variables", "js-dom", "js-async-await", "js-fetch-api"];
-    const items = sampleIds.map(getLessonById).filter(Boolean);
-    dom.recommendedGrid.innerHTML = items.map(createLessonCardHTML).join("");
-  }
-
-  /* -------------------- ҶУСТУҶӮ ВА ФИЛТР -------------------- */
-  function populateGroupFilterOptions(langValue) {
-    const pool = langValue === "ALL" ? LESSONS : LESSONS.filter((l) => l.lang === langValue);
-    const groups = [...new Set(pool.map((l) => l.group))];
-    let opts = `<option value="ALL">Ҳамаи гурӯҳҳо</option>`;
-    groups.forEach((g) => {
-      opts += `<option value="${escapeHtml(g)}">${escapeHtml(g)}</option>`;
+        </article>
+      `;
     });
-    dom.groupFilterSelect.innerHTML = opts;
-    if (groups.includes(state.filterGroup)) {
-      dom.groupFilterSelect.value = state.filterGroup;
-    } else {
-      state.filterGroup = "ALL";
-      dom.groupFilterSelect.value = "ALL";
-    }
+    dom.coursesGrid.innerHTML = html;
   }
 
-  function getFilteredLessons() {
-    let list = LESSONS.slice();
+  /* -------------------- РӮЙХАТ, ҶУСТУҶӮ ВА ФИЛТР -------------------- */
+  function populateCourseAndGroupFilters() {
+    let cOpts = `<option value="ALL">Ҳамаи курсҳо</option>`;
+    COURSES.forEach((c) => {
+      cOpts += `<option value="${c.id}">${escapeHtml(c.title)}</option>`;
+    });
+    dom.courseFilterSelect.innerHTML = cOpts;
+    dom.courseFilterSelect.value = state.filterCourse;
 
-    if (state.listMode === "favorites") {
-      list = list.filter((l) => state.favorites.includes(l.id));
-    } else if (state.listMode === "learned") {
-      list = list.filter((l) => state.learned.includes(l.id));
-    } else if (["HTML", "CSS", "JavaScript"].includes(state.listMode)) {
-      list = list.filter((l) => l.lang === state.listMode);
-    }
-
-    if (state.filterLang !== "ALL") {
-      list = list.filter((l) => l.lang === state.filterLang);
-    }
-
-    if (state.filterGroup !== "ALL") {
-      list = list.filter((l) => l.group === state.filterGroup);
-    }
-
-    const q = state.searchQuery.trim().toLowerCase();
-    if (q) {
-      list = list.filter((l) => {
-        return (
-          l.name.toLowerCase().includes(q) ||
-          l.lang.toLowerCase().includes(q) ||
-          l.group.toLowerCase().includes(q) ||
-          l.description.toLowerCase().includes(q) ||
-          l.purpose.toLowerCase().includes(q)
-        );
-      });
-    }
-
-    return list;
+    const pool = state.filterCourse === "ALL"
+      ? ALL_LESSONS
+      : ALL_LESSONS.filter((l) => String(l.course) === String(state.filterCourse));
+    const groups = [...new Set(pool.map((l) => l.group))];
+    let gOpts = `<option value="ALL">Ҳамаи гурӯҳҳо</option>`;
+    groups.forEach((g) => {
+      gOpts += `<option value="${escapeHtml(g)}">${escapeHtml(g)}</option>`;
+    });
+    dom.groupFilterSelect.innerHTML = gOpts;
+    if (!groups.includes(state.filterGroup)) state.filterGroup = "ALL";
+    dom.groupFilterSelect.value = state.filterGroup;
   }
 
   function renderListView() {
     const titles = {
-      ALL: "Ҳамаи дарсҳои Web Academy",
-      HTML: "Дарсҳои HTML",
-      CSS: "Дарсҳои CSS",
-      JavaScript: "Дарсҳои JavaScript",
-      favorites: "Мунтахабҳо",
+      ALL: "Ҳамаи курсҳо ва дарсҳо",
+      courses: "Барномаи 6-курсӣ",
+      favorites: "Дарсҳои мунтахаб",
       learned: "Дарсҳои омӯхташуда",
       search: "Натиҷаҳои ҷустуҷӯ"
     };
-
     dom.listViewTitle.textContent = titles[state.listMode] || "Рӯйхати дарсҳо";
-    dom.langFilterSelect.value = state.filterLang;
-    populateGroupFilterOptions(state.filterLang);
+    populateCourseAndGroupFilters();
 
-    const results = getFilteredLessons();
-    dom.listViewSubtitle.textContent = `${results.length} дарс ёфт шуд`;
+    let list = ALL_LESSONS.slice();
+    if (state.listMode === "favorites") list = list.filter((l) => state.favorites.includes(l.id));
+    else if (state.listMode === "learned") list = list.filter((l) => state.learned.includes(l.id));
 
-    if (results.length === 0) {
+    if (state.filterCourse !== "ALL") list = list.filter((l) => String(l.course) === String(state.filterCourse));
+    if (state.filterGroup !== "ALL") list = list.filter((l) => l.group === state.filterGroup);
+
+    const q = state.searchQuery.trim().toLowerCase();
+    if (q) {
+      list = list.filter((l) =>
+        l.name.toLowerCase().includes(q) ||
+        l.lang.toLowerCase().includes(q) ||
+        l.group.toLowerCase().includes(q) ||
+        l.description.toLowerCase().includes(q)
+      );
+    }
+
+    dom.listViewSubtitle.textContent = `${list.length} дарс ёфт шуд`;
+    if (list.length === 0) {
       dom.lessonCardsGrid.innerHTML = "";
       dom.emptyListState.classList.remove("hidden");
-      if (state.listMode === "favorites") {
-        dom.emptyStateTitle.textContent = "Рӯйхати мунтахабҳо холӣ аст";
-        dom.emptyStateDesc.textContent = "Барои илова кардан, дар саҳифаи дарс тугмаи «Ба мунтахаб»-ро пахш кунед.";
-      } else if (state.listMode === "learned") {
-        dom.emptyStateTitle.textContent = "Ҳанӯз ягон дарс қайд нашудааст";
-        dom.emptyStateDesc.textContent = "Пас аз омӯхтани дарс тугмаи «Омӯхтам»-ро пахш кунед.";
-      } else {
-        dom.emptyStateTitle.textContent = "Ҳеҷ дарс ёфт нашуд";
-        dom.emptyStateDesc.textContent = "Калимаи дигарро ворид кунед ё филтрҳоро тоза намоед.";
-      }
     } else {
       dom.emptyListState.classList.add("hidden");
-      dom.lessonCardsGrid.innerHTML = results.map(createLessonCardHTML).join("");
+      dom.lessonCardsGrid.innerHTML = list.map((lesson) => {
+        const idx = ALL_LESSONS.findIndex((x) => x.id === lesson.id);
+        const unlocked = isLessonUnlocked(idx);
+        const isDone = state.learned.includes(lesson.id);
+        const isFav = state.favorites.includes(lesson.id);
+        const badgeCls = lesson.lang === "HTML" ? "badge-html" : lesson.lang === "CSS" ? "badge-css" : "badge-js";
+        return `
+          <article class="lesson-card ${unlocked ? "" : "locked"}" data-lesson-id="${escapeHtml(lesson.id)}" tabindex="0" role="button">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div>
+                <span class="lang-badge ${badgeCls}">${escapeHtml(lesson.lang)}</span>
+                <span class="group-badge">Курс ${lesson.course}</span>
+              </div>
+              <div>
+                ${isFav ? '<span style="color:#facc15;font-weight:700;">★</span>' : ""}
+                ${isDone ? '<span style="color:var(--success);font-weight:700;">&#10003;</span>' : (!unlocked ? '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>' : "")}
+              </div>
+            </div>
+            <h3 style="margin:0;font-size:1rem;">${escapeHtml(lesson.name)}</h3>
+            <p class="muted-text" style="margin:0;">${escapeHtml(lesson.description)}</p>
+          </article>
+        `;
+      }).join("");
     }
   }
 
-  /* -------------------- КУШОДАНИ САҲИФАИ ДАРС -------------------- */
+  /* -------------------- КУШОДАНИ ДАРС ВА САНҶИШИ ВАЗИФА -------------------- */
   function openLesson(lessonId) {
-    const lesson = getLessonById(lessonId);
-    if (!lesson) {
-      showToast("Дарс ёфт нашуд");
-      switchView("home");
+    const idx = ALL_LESSONS.findIndex((l) => l.id === lessonId);
+    if (idx === -1) return;
+
+    if (!isLessonUnlocked(idx)) {
+      const prev = ALL_LESSONS[idx - 1];
+      showToast(`Аввал дарси қаблиро («${prev.name}») иҷро кунед!`);
       return;
     }
 
-    if (state.currentView !== "lesson") {
-      state.lastListMode = state.currentView === "list" ? state.listMode : "home";
-    }
-
+    const lesson = ALL_LESSONS[idx];
+    if (state.currentView !== "lesson") state.lastListMode = state.currentView === "list" ? state.listMode : "home";
     state.activeLessonId = lesson.id;
     state.currentView = "lesson";
 
-    // Кушодани папкаи мувофиқ дар дарахт
-    state.openFolders[getFolderKey(lesson.lang, lesson.group)] = true;
+    state.openFolders[getFolderKey(lesson.course, lesson.group)] = true;
     writeStorage(STORAGE_KEYS.openFolders, state.openFolders);
 
-    dom.dashboardView.classList.add("hidden");
-    dom.listView.classList.add("hidden");
+    hideAllViews();
     dom.lessonView.classList.remove("hidden");
 
-    dom.lessonBreadcrumbText.textContent = `${lesson.lang} / ${lesson.group} / ${lesson.name}`;
+    dom.lessonBreadcrumbText.textContent = `Курси ${lesson.course} / ${lesson.group} / ${lesson.name}`;
     dom.lessonLangBadge.textContent = lesson.lang;
-    dom.lessonLangBadge.className = `lang-badge ${getLangBadgeClass(lesson.lang)}`;
+    dom.lessonLangBadge.className = `lang-badge ${lesson.lang === "HTML" ? "badge-html" : lesson.lang === "CSS" ? "badge-css" : "badge-js"}`;
     dom.lessonGroupBadge.textContent = lesson.group;
-
     dom.lessonTitle.textContent = lesson.name;
     dom.lessonDescription.textContent = lesson.description;
     dom.lessonPurpose.textContent = lesson.purpose;
     dom.lessonUsage.textContent = lesson.usage;
 
-    // Равшансозии синтаксис ва нигоҳдории матни аслӣ барои нусхабардорӣ
     dom.lessonSyntaxCode.dataset.raw = lesson.syntax;
     dom.lessonSyntaxCode.innerHTML = highlightCode(lesson.syntax, lesson.lang);
-
     dom.lessonShortCode.dataset.raw = lesson.shortExample;
     dom.lessonShortCode.innerHTML = highlightCode(lesson.shortExample, lesson.lang);
 
+    dom.lessonTaskPrompt.textContent = lesson.taskPrompt;
+    dom.lessonHintText.textContent = lesson.hint;
+    dom.lessonHintBox.classList.add("hidden");
+    dom.taskFeedbackBox.classList.add("hidden");
+    dom.lessonCodeEditor.value = state.taskDrafts[lesson.id] || lesson.starterCode;
+
+    const alreadyDone = state.learned.includes(lesson.id);
+    dom.lessonSolutionSection.classList.toggle("hidden", !alreadyDone);
+    dom.toggleSolutionBtn.classList.toggle("hidden", !alreadyDone);
+    dom.lessonStatusBadge.textContent = alreadyDone ? "Иҷро шуд" : "Дарси фаъол";
+
     dom.lessonFullCode.dataset.raw = lesson.fullExample;
     dom.lessonFullCode.innerHTML = highlightCode(lesson.fullExample, lesson.lang);
-
     dom.lessonOutputText.textContent = lesson.outputText;
-    dom.lessonPreviewFrame.srcdoc = `<!DOCTYPE html><html lang="tg"><head><meta charset="UTF-8"><style>body{margin:10px;color:#0f172a;background:#fff;}</style></head><body>${lesson.previewHtml || ""}</body></html>`;
+    dom.lessonPreviewFrame.srcdoc = `<!DOCTYPE html><html lang="tg"><head><meta charset="UTF-8"><style>body{margin:10px;color:#0f172a;background:#fff;font-family:sans-serif;}</style></head><body>${lesson.previewHtml || ""}</body></html>`;
 
     dom.lessonMistakes.textContent = lesson.mistakes;
     dom.lessonTip.textContent = lesson.tip;
 
-    updateLessonActionButtons();
-
-    const idx = LESSONS.findIndex((l) => l.id === lesson.id);
+    updateLessonFavoriteBtn();
     dom.prevLessonBtn.disabled = idx <= 0;
-    dom.nextLessonBtn.disabled = idx >= LESSONS.length - 1;
+    dom.nextLessonBtn.disabled = idx >= ALL_LESSONS.length - 1 || !isLessonUnlocked(idx + 1);
 
     renderExplorerTree();
     toggleSidebarMobile(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  function updateLessonActionButtons() {
-    const id = state.activeLessonId;
-    if (!id) return;
-
-    const isFav = state.favorites.includes(id);
+  function updateLessonFavoriteBtn() {
+    const isFav = state.favorites.includes(state.activeLessonId);
     dom.toggleFavoriteBtn.classList.toggle("active", isFav);
-    dom.favBtnIcon.innerHTML = isFav ? "&#9733;" : "&#9734;";
     dom.favBtnText.textContent = isFav ? "Дар мунтахаб" : "Ба мунтахаб";
-
-    const isLearned = state.learned.includes(id);
-    dom.toggleLearnedBtn.classList.toggle("active", isLearned);
-    dom.learnedBtnText.textContent = isLearned ? "Омӯхта шуд" : "Омӯхтам";
   }
 
-  /* -------------------- ИВАЗКУНИИ САҲИФАҲО -------------------- */
-  function updateActiveNavPill(viewKey) {
-    dom.navPills.forEach((pill) => {
-      pill.classList.toggle("active", pill.dataset.view === viewKey);
+  function evaluateLessonTask() {
+    const lesson = getLessonById(state.activeLessonId);
+    if (!lesson) return;
+    const code = dom.lessonCodeEditor.value.trim();
+
+    if (code.length < 5) {
+      showTaskFeedback(false, "Майдони код холӣ ё хеле кӯтоҳ аст. Лутфан вазифаро нависед.");
+      return;
+    }
+
+    // Санҷиши token-ҳои мушаххас (агар дарс дошта бошад)
+    if (Array.isArray(lesson.expectedTokens)) {
+      const missing = lesson.expectedTokens.filter((tok) => !code.toLowerCase().includes(tok.toLowerCase()));
+      if (missing.length > 0) {
+        showTaskFeedback(false, `Дар коди шумо ин қисмат намерасад: ${missing.join(", ")}. Роҳнаморо бинед ва ислоҳ кунед.`);
+        return;
+      }
+    }
+
+    // Санҷиши воқеии HTML/CSS/JS
+    if (lesson.lang === "HTML") {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(code, "text/html");
+      if (!doc.body || (doc.body.children.length === 0 && !code.includes("<!DOCTYPE"))) {
+        showTaskFeedback(false, "Дар коди HTML ягон унсури дуруст ёфт нашуд. Тегҳоро дуруст нависед.");
+        return;
+      }
+      const tagGuess = lesson.name.match(/<([a-zA-Z0-9-]+)/);
+      if (tagGuess && tagGuess[1] !== "DOCTYPE" && tagGuess[1] !== "html" && tagGuess[1] !== "head" && tagGuess[1] !== "body") {
+        const tag = tagGuess[1].toLowerCase();
+        if (doc.querySelectorAll(tag).length === 0 && !code.toLowerCase().includes(`<${tag}`)) {
+          showTaskFeedback(false, `Дар ин вазифа бояд теги <${tag}>-ро истифода баред.`);
+          return;
+        }
+      }
+    } else if (lesson.lang === "CSS") {
+      if (!code.includes("{") || !code.includes("}") || !code.includes(":")) {
+        showTaskFeedback(false, "Синтаксиси CSS нопурра аст: селектор { хосият: қиммат; }-ро санҷед.");
+        return;
+      }
+    } else {
+      // Санҷиши синтаксис ва иҷрои бехатари JS
+      try {
+        new Function(code);
+      } catch (err) {
+        showTaskFeedback(false, `Хатои синтаксиси JavaScript: ${err.message}`);
+        return;
+      }
+    }
+
+    // Муваффақият!
+    const wasNew = !state.learned.includes(lesson.id);
+    if (wasNew) {
+      state.learned.push(lesson.id);
+      state.xp += 25;
+      const today = getTodayStr();
+      if (state.daily.date !== today) state.daily = { date: today, count: 0 };
+      state.daily.count += 1;
+      if (state.streak.lastDate !== today) {
+        state.streak = { lastDate: today, count: (state.streak.count || 0) + 1 };
+      }
+      writeStorage(STORAGE_KEYS.learned, state.learned);
+      writeStorage(STORAGE_KEYS.xp, state.xp);
+      writeStorage(STORAGE_KEYS.daily, state.daily);
+      writeStorage(STORAGE_KEYS.streak, state.streak);
+    }
+
+    showTaskFeedback(true, wasNew
+      ? "Офарин! Вазифа дуруст иҷро шуд (+25 XP) ва дарси навбатӣ кушода гардид!"
+      : "Офарин! Коди шумо дуруст аст.");
+
+    dom.lessonSolutionSection.classList.remove("hidden");
+    dom.toggleSolutionBtn.classList.remove("hidden");
+    dom.lessonStatusBadge.textContent = "Иҷро шуд";
+
+    const idx = ALL_LESSONS.findIndex((l) => l.id === lesson.id);
+    dom.nextLessonBtn.disabled = idx >= ALL_LESSONS.length - 1;
+    updateProgressUI();
+    renderExplorerTree();
+  }
+
+  function showTaskFeedback(ok, msg) {
+    dom.taskFeedbackBox.textContent = msg;
+    dom.taskFeedbackBox.className = `task-feedback ${ok ? "ok" : "err"}`;
+    dom.taskFeedbackBox.classList.remove("hidden");
+  }
+
+  /* -------------------- WEB ACADEMY STUDIO -------------------- */
+  function getActiveProject() {
+    return state.projects.find((p) => p.id === state.activeProjectId) || state.projects[0];
+  }
+
+  function updateStudioLineNumbers() {
+    const lines = dom.studioCodeEditor.value.split("\n").length;
+    let nums = "";
+    for (let i = 1; i <= lines; i++) nums += i + "\n";
+    dom.studioLineNumbers.textContent = nums;
+  }
+
+  function renderStudio() {
+    const proj = getActiveProject();
+    if (!proj) return;
+    state.activeProjectId = proj.id;
+
+    let pOpts = "";
+    state.projects.forEach((p) => {
+      pOpts += `<option value="${escapeHtml(p.id)}">${escapeHtml(p.name)}</option>`;
+    });
+    dom.studioProjectSelect.innerHTML = pOpts;
+    dom.studioProjectSelect.value = proj.id;
+
+    const fileNames = Object.keys(proj.files);
+    if (!fileNames.includes(state.activeStudioFile)) state.activeStudioFile = fileNames[0] || "index.html";
+
+    dom.studioFileList.innerHTML = fileNames.map((fn) => `
+      <button type="button" class="studio-file-item ${fn === state.activeStudioFile ? "active" : ""}" data-studio-file="${escapeHtml(fn)}">
+        <span>${escapeHtml(fn)}</span>
+      </button>
+    `).join("");
+
+    dom.studioActiveFileName.textContent = state.activeStudioFile;
+    dom.studioCodeEditor.value = proj.files[state.activeStudioFile] || "";
+    updateStudioLineNumbers();
+    runStudioPreview();
+  }
+
+  function runStudioPreview() {
+    const proj = getActiveProject();
+    if (!proj) return;
+    const htmlCode = proj.files["index.html"] || "";
+    const cssCode = Object.keys(proj.files).filter((f) => f.endsWith(".css")).map((f) => proj.files[f]).join("\n");
+    const jsCode = Object.keys(proj.files).filter((f) => f.endsWith(".js")).map((f) => proj.files[f]).join("\n");
+
+    const combined = `<!DOCTYPE html><html lang="tg"><head><meta charset="UTF-8"><style>${cssCode}</style></head><body>${htmlCode}<script>try{${jsCode}}catch(e){document.body.insertAdjacentHTML('beforeend','<pre style="color:red;background:#fee;padding:8px;">Хато: '+e.message+'</pre>');}<\/script></body></html>`;
+    dom.studioPreviewFrame.srcdoc = combined;
+  }
+
+  function saveStudioProjects() {
+    writeStorage(STORAGE_KEYS.projects, state.projects);
+    writeStorage(STORAGE_KEYS.activeProjectId, state.activeProjectId);
+  }
+
+  /* -------------------- AI MENTOR (GEMINI API) -------------------- */
+  function appendAiMessage(role, text) {
+    const div = document.createElement("div");
+    div.className = `ai-msg ${role === "user" ? "ai-msg-user" : "ai-msg-bot"}`;
+    div.textContent = (role === "user" ? "Шумо: " : "AI Mentor: ") + text;
+    dom.aiMessagesBox.appendChild(div);
+    dom.aiMessagesBox.scrollTop = dom.aiMessagesBox.scrollHeight;
+  }
+
+  async function fetchAvailableGeminiModels(apiKey) {
+    if (!navigator.onLine) {
+      dom.aiStatusLabel.textContent = "Ҳолат: Интернет нест (AI Mentor танҳо бо интернет кор мекунад)";
+      showToast("Пайвасти интернет нест");
+      return;
+    }
+    dom.aiStatusLabel.textContent = "Ҳолат: Дар ҳоли санҷиши калид ва гирифтани моделҳо...";
+    try {
+      const res = await fetch("https://generativelanguage.googleapis.com/v1beta/models", {
+        headers: { "x-goog-api-key": apiKey }
+      });
+      if (!res.ok) {
+        handleAiHttpError(res.status);
+        return;
+      }
+      const data = await res.json();
+      const models = (data.models || []).filter((m) =>
+        Array.isArray(m.supportedGenerationMethods) && m.supportedGenerationMethods.includes("generateContent")
+      );
+      if (models.length === 0) {
+        dom.aiStatusLabel.textContent = "Ҳолат: Ягон модели мувофиқ ёфт нашуд";
+        return;
+      }
+      state.aiModels = models.map((m) => m.name.replace(/^models\//, ""));
+      // Интихоби модели навтарини flash ё pro
+      const preferred = state.aiModels.find((n) => n.includes("flash")) || state.aiModels[0];
+      state.aiSelectedModel = preferred;
+      dom.aiModelSelect.innerHTML = state.aiModels.map((m) => `<option value="${escapeHtml(m)}">${escapeHtml(m)}</option>`).join("");
+      dom.aiModelSelect.value = preferred;
+      dom.aiStatusLabel.textContent = `Ҳолат: Калид фаъол аст (${state.aiModels.length} модел дастрас)`;
+      showToast("Калид тасдиқ шуд!");
+    } catch (e) {
+      dom.aiStatusLabel.textContent = "Ҳолат: Хатои пайвастшавӣ ба сервер";
+    }
+  }
+
+  function handleAiHttpError(status) {
+    const map = {
+      401: "Калиди API нодуруст аст (401). Лутфан калидро санҷед.",
+      403: "Дастрасӣ манъ аст (403). Ҳуқуқи калиди API-ро санҷед.",
+      404: "Модели интихобшуда ёфт нашуд (404). Модели дигарро интихоб кунед.",
+      429: "Маҳдудияти дархостҳо гузашт (429). Каме интизор шавед."
+    };
+    const msg = map[status] || `Хатои сервер (${status}).`;
+    dom.aiStatusLabel.textContent = "Ҳолат: " + msg;
+    appendAiMessage("bot", msg);
+  }
+
+  async function sendAiPrompt(promptText) {
+    const key = state.aiSessionKey || dom.aiApiKeyInput.value.trim();
+    if (!key) {
+      appendAiMessage("bot", "Лутфан аввал API Key-и шахсии Gemini-и худро ворид кунед ё тугмаи «Гирифтани API Key»-ро пахш намоед.");
+      return;
+    }
+    if (!navigator.onLine) {
+      appendAiMessage("bot", "Шумо ҳоло дар ҳолати офлайн ҳастед. AI Mentor барои кор кардан интернет талаб мекунад.");
+      return;
+    }
+
+    state.aiSessionKey = key;
+    if (!state.aiSelectedModel) {
+      await fetchAvailableGeminiModels(key);
+      if (!state.aiSelectedModel) return;
+    }
+
+    appendAiMessage("user", promptText);
+    state.aiHistory.push({ role: "user", parts: [{ text: promptText }] });
+    dom.aiSendBtn.disabled = true;
+
+    try {
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(state.aiSelectedModel)}:generateContent`;
+      const res = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-goog-api-key": key
+        },
+        body: JSON.stringify({
+          systemInstruction: {
+            parts: [{ text: "Ту AI Mentor-и WEB ACADEMY (AZIZZODA COMPANY) ҳастӣ. Бо забони тоҷикии фаҳмо ва касбӣ ба саволҳои HTML, CSS, JavaScript ва 3D ҷавоб деҳ. Истилоҳҳои барномасозиро бо англисӣ нигоҳ дошта, бо тоҷикӣ шарҳ деҳ." }]
+          },
+          contents: state.aiHistory.slice(-10)
+        })
+      });
+
+      if (!res.ok) {
+        handleAiHttpError(res.status);
+        dom.aiSendBtn.disabled = false;
+        return;
+      }
+
+      const data = await res.json();
+      const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Ҷавоб гирифта нашуд.";
+      state.aiHistory.push({ role: "model", parts: [{ text: reply }] });
+      appendAiMessage("bot", reply);
+    } catch (e) {
+      appendAiMessage("bot", "Хатои шабака ҳангоми тамос бо Gemini API.");
+    } finally {
+      dom.aiSendBtn.disabled = false;
+    }
+  }
+
+  /* -------------------- ЛОИҲАҲО, ЛУҒАТ, НИШОНҲО, ИМТИҲОН -------------------- */
+  function renderProjectsGallery() {
+    dom.projectsGalleryGrid.innerHTML = state.projects.map((p) => `
+      <article class="course-card">
+        <h3 style="margin:0;">${escapeHtml(p.name)}</h3>
+        <span class="muted-text">${Object.keys(p.files).length} файл</span>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;">
+          <button type="button" class="btn btn-sm btn-primary open-proj-btn" data-proj-id="${escapeHtml(p.id)}">Кушодан дар Studio</button>
+          <button type="button" class="btn btn-sm btn-secondary rename-proj-btn" data-proj-id="${escapeHtml(p.id)}">Ном</button>
+          <button type="button" class="btn btn-sm btn-danger delete-proj-btn" data-proj-id="${escapeHtml(p.id)}">Нест</button>
+        </div>
+      </article>
+    `).join("");
+  }
+
+  function renderGlossary(query) {
+    const q = (query || "").trim().toLowerCase();
+    const list = q
+      ? GLOSSARY_ITEMS.filter((g) => g.term.toLowerCase().includes(q) || g.desc.toLowerCase().includes(q) || g.lang.toLowerCase().includes(q))
+      : GLOSSARY_ITEMS;
+    dom.glossaryGrid.innerHTML = list.map((g) => `
+      <article class="course-card">
+        <span class="lang-badge ${g.lang === "HTML" ? "badge-html" : g.lang === "CSS" ? "badge-css" : "badge-js"}">${escapeHtml(g.lang)}</span>
+        <h3 style="margin:0;">${escapeHtml(g.term)}</h3>
+        <p class="muted-text" style="margin:0;">${escapeHtml(g.desc)}</p>
+      </article>
+    `).join("");
+  }
+
+  function renderAchievementsAndExam() {
+    dom.badgesGrid.innerHTML = BADGES_DEF.map((b) => {
+      const earned = b.check(state);
+      return `
+        <article class="course-card" style="border-color:${earned ? "var(--primary-electric)" : "var(--border)"};opacity:${earned ? "1" : "0.6"};">
+          <span class="status-pill">${earned ? "Ба даст оварда шуд" : "Пӯшида"}</span>
+          <h3 style="margin:4px 0 0;">${escapeHtml(b.title)}</h3>
+          <p class="muted-text" style="margin:0;">${escapeHtml(b.desc)}</p>
+        </article>
+      `;
+    }).join("");
+
+    let qHtml = `<form id="examForm">`;
+    EXAM_QUESTIONS.forEach((item, idx) => {
+      qHtml += `<div class="exam-q"><strong>${escapeHtml(item.q)}</strong>`;
+      item.options.forEach((opt, oIdx) => {
+        qHtml += `<label class="exam-opt"><input type="radio" name="eq_${idx}" value="${oIdx}"> ${escapeHtml(opt)}</label>`;
+      });
+      qHtml += `</div>`;
+    });
+    qHtml += `<button type="submit" class="btn btn-primary" style="margin-top:12px;">Супоридани имтиҳон</button></form>`;
+    dom.examContainer.innerHTML = qHtml;
+
+    dom.certificateBox.classList.toggle("hidden", !state.examPassed);
+    if (state.examPassed) {
+      dom.certStatsText.textContent = `Дарсҳои гузашта: ${state.learned.length} / ${ALL_LESSONS.length} | Хол: ${state.xp} XP`;
+    }
+
+    document.getElementById("examForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      let score = 0;
+      EXAM_QUESTIONS.forEach((item, idx) => {
+        const checked = document.querySelector(`input[name="eq_${idx}"]:checked`);
+        if (checked && Number(checked.value) === item.answer) score++;
+      });
+      if (score >= 4) {
+        state.examPassed = true;
+        writeStorage(STORAGE_KEYS.examPassed, true);
+        showToast(`Табрик! Имтиҳон бо ${score}/5 хол супорида шуд!`);
+        renderAchievementsAndExam();
+      } else {
+        showToast(`Натиҷа: ${score}/5. Барои гузаштан ҳадди ақал 4 хол лозим аст.`);
+      }
     });
   }
 
-  function switchView(mode) {
-    if (mode === "home") {
+  /* -------------------- ИВАЗКУНИИ САҲИФАҲО -------------------- */
+  function hideAllViews() {
+    [
+      dom.dashboardView, dom.listView, dom.lessonView,
+      dom.studioView, dom.aiView, dom.projectsView,
+      dom.glossaryView, dom.achievementsView, dom.aboutView
+    ].forEach((v) => v.classList.add("hidden"));
+  }
+
+  function updateActiveNavPill(key) {
+    dom.navPills.forEach((p) => p.classList.toggle("active", p.dataset.view === key));
+  }
+
+  function switchView(view) {
+    hideAllViews();
+    state.activeLessonId = null;
+    updateActiveNavPill(view);
+
+    if (view === "home") {
       state.currentView = "home";
-      state.activeLessonId = null;
       dom.dashboardView.classList.remove("hidden");
-      dom.listView.classList.add("hidden");
-      dom.lessonView.classList.add("hidden");
-      updateActiveNavPill("home");
-      renderRecommendedDashboard();
-    } else {
+      updateProgressUI();
+    } else if (["courses", "ALL", "favorites", "learned", "search"].includes(view)) {
       state.currentView = "list";
-      state.activeLessonId = null;
-      state.listMode = mode;
-
-      if (["HTML", "CSS", "JavaScript"].includes(mode)) {
-        state.filterLang = mode;
-        updateActiveNavPill(`lang-${mode}`);
-      } else {
-        if (mode !== "search") state.filterLang = "ALL";
-        updateActiveNavPill(mode);
-      }
-
-      dom.dashboardView.classList.add("hidden");
-      dom.lessonView.classList.add("hidden");
+      state.listMode = view;
       dom.listView.classList.remove("hidden");
       renderListView();
+    } else if (view === "studio") {
+      state.currentView = "studio";
+      dom.studioView.classList.remove("hidden");
+      renderStudio();
+    } else if (view === "ai") {
+      state.currentView = "ai";
+      dom.aiView.classList.remove("hidden");
+    } else if (view === "projects") {
+      state.currentView = "projects";
+      dom.projectsView.classList.remove("hidden");
+      renderProjectsGallery();
+    } else if (view === "glossary") {
+      state.currentView = "glossary";
+      dom.glossaryView.classList.remove("hidden");
+      renderGlossary(dom.glossarySearchInput.value);
+    } else if (view === "achievements") {
+      state.currentView = "achievements";
+      dom.achievementsView.classList.remove("hidden");
+      renderAchievementsAndExam();
+    } else if (view === "about") {
+      state.currentView = "about";
+      dom.aboutView.classList.remove("hidden");
     }
     renderExplorerTree();
   }
 
-  /* -------------------- ҲОДИСАҲО (EVENT LISTENERS) -------------------- */
+  function toggleSidebarMobile(open) {
+    dom.sidebar.classList.toggle("open", open);
+    dom.sidebarBackdrop.classList.toggle("hidden", !open);
+  }
+
+  /* -------------------- ҲОДИСАҲО -------------------- */
   function bindEvents() {
-    // Менюи мобилӣ
+    dom.startWelcomeBtn.addEventListener("click", () => {
+      writeStorage(STORAGE_KEYS.welcomeSeen, true);
+      dom.welcomeOverlay.classList.add("hidden");
+    });
+
     dom.menuToggleBtn.addEventListener("click", () => toggleSidebarMobile(true));
     dom.closeSidebarBtn.addEventListener("click", () => toggleSidebarMobile(false));
     dom.sidebarBackdrop.addEventListener("click", () => toggleSidebarMobile(false));
 
-    // Логотип ва тугмаҳои саҳифаи асосӣ
-    dom.logoBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      dom.searchInput.value = "";
-      state.searchQuery = "";
-      dom.clearSearchBtn.classList.add("hidden");
-      switchView("home");
+    dom.logoBtn.addEventListener("click", (e) => { e.preventDefault(); switchView("home"); });
+    dom.profileAboutBtn.addEventListener("click", () => switchView("about"));
+
+    dom.continueLearningBtn.addEventListener("click", () => openLesson(getNextUnlockedLesson().id));
+    dom.openStudioFromHeroBtn.addEventListener("click", () => switchView("studio"));
+    dom.openAiFromHeroBtn.addEventListener("click", () => switchView("ai"));
+
+    document.querySelectorAll("[data-jump-view]").forEach((btn) => {
+      btn.addEventListener("click", () => switchView(btn.dataset.jumpView));
     });
 
-    dom.startLearningBtn.addEventListener("click", () => openLesson("html-doctype"));
-    dom.browseAllBtn.addEventListener("click", () => {
-      state.filterLang = "ALL";
-      state.filterGroup = "ALL";
-      switchView("ALL");
-    });
-
-    dom.openLangBtns.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        state.filterGroup = "ALL";
-        switchView(btn.dataset.openLang);
-      });
-    });
-
-    // Навигатсияи зуд
     dom.navPills.forEach((pill) => {
       pill.addEventListener("click", () => {
-        const view = pill.dataset.view;
+        state.filterCourse = "ALL";
         state.filterGroup = "ALL";
-        if (view === "home") switchView("home");
-        else if (view.startsWith("lang-")) switchView(view.replace("lang-", ""));
-        else switchView(view);
+        switchView(pill.dataset.view);
       });
     });
 
-    // Филтрҳои рӯйхат
-    dom.langFilterSelect.addEventListener("change", () => {
-      state.filterLang = dom.langFilterSelect.value;
+    dom.coursesGrid.addEventListener("click", (e) => {
+      const btn = e.target.closest(".open-course-btn");
+      if (btn) {
+        state.filterCourse = btn.dataset.courseId;
+        state.filterGroup = "ALL";
+        switchView("courses");
+      }
+    });
+
+    dom.courseFilterSelect.addEventListener("change", () => {
+      state.filterCourse = dom.courseFilterSelect.value;
       state.filterGroup = "ALL";
       renderListView();
     });
@@ -2350,27 +3108,17 @@
     dom.resetFiltersBtn.addEventListener("click", () => {
       dom.searchInput.value = "";
       state.searchQuery = "";
-      state.filterLang = "ALL";
+      state.filterCourse = "ALL";
       state.filterGroup = "ALL";
       dom.clearSearchBtn.classList.add("hidden");
-      switchView("ALL");
+      switchView("courses");
     });
 
-    // Ҷустуҷӯи фаврӣ
     dom.searchInput.addEventListener("input", () => {
       state.searchQuery = dom.searchInput.value;
       dom.clearSearchBtn.classList.toggle("hidden", !state.searchQuery);
-      if (state.searchQuery.trim()) {
-        state.listMode = "search";
-        state.currentView = "list";
-        dom.dashboardView.classList.add("hidden");
-        dom.lessonView.classList.add("hidden");
-        dom.listView.classList.remove("hidden");
-        updateActiveNavPill("");
-        renderListView();
-      } else {
-        switchView("home");
-      }
+      if (state.searchQuery.trim()) switchView("search");
+      else switchView("home");
     });
 
     dom.clearSearchBtn.addEventListener("click", () => {
@@ -2380,25 +3128,19 @@
       switchView("home");
     });
 
-    // Дарахти папкаҳо (Delegation)
     dom.explorerTree.addEventListener("click", (e) => {
-      const folderBtn = e.target.closest(".tree-folder-btn");
-      if (folderBtn) {
-        const folderEl = folderBtn.closest(".tree-folder");
+      const fBtn = e.target.closest(".tree-folder-btn");
+      if (fBtn) {
+        const folderEl = fBtn.closest(".tree-folder");
         const key = folderEl.dataset.folderKey;
         const willOpen = !folderEl.classList.contains("open");
         folderEl.classList.toggle("open", willOpen);
-        folderBtn.setAttribute("aria-expanded", String(willOpen));
         state.openFolders[key] = willOpen;
         writeStorage(STORAGE_KEYS.openFolders, state.openFolders);
-        updateToggleAllButtonLabel();
         return;
       }
-
       const itemBtn = e.target.closest(".tree-item-btn");
-      if (itemBtn) {
-        openLesson(itemBtn.dataset.lessonId);
-      }
+      if (itemBtn) openLesson(itemBtn.dataset.lessonId);
     });
 
     dom.treeLangBtns.forEach((btn) => {
@@ -2412,28 +3154,19 @@
 
     dom.toggleAllFoldersBtn.addEventListener("click", () => {
       const folderEls = dom.explorerTree.querySelectorAll(".tree-folder");
-      const anyOpen = Array.from(folderEls).some((el) => el.classList.contains("open"));
-      const nextState = !anyOpen;
-      folderEls.forEach((el) => {
-        state.openFolders[el.dataset.folderKey] = nextState;
-      });
+      const next = !Array.from(folderEls).some((el) => el.classList.contains("open"));
+      folderEls.forEach((el) => { state.openFolders[el.dataset.folderKey] = next; });
       writeStorage(STORAGE_KEYS.openFolders, state.openFolders);
       renderExplorerTree();
     });
 
-    // Кушодани дарс аз кортҳо
-    const handleCardClick = (e) => {
+    dom.lessonCardsGrid.addEventListener("click", (e) => {
       const card = e.target.closest(".lesson-card");
       if (card) openLesson(card.dataset.lessonId);
-    };
-    dom.recommendedGrid.addEventListener("click", handleCardClick);
-    dom.lessonCardsGrid.addEventListener("click", handleCardClick);
-
-    // Амалҳои саҳифаи дарс
-    dom.backToListBtn.addEventListener("click", () => {
-      switchView(state.lastListMode || "home");
     });
 
+    // Вазифаи амалӣ дар дарс
+    dom.backToListBtn.addEventListener("click", () => switchView(state.lastListMode || "home"));
     dom.toggleFavoriteBtn.addEventListener("click", () => {
       const id = state.activeLessonId;
       if (!id) return;
@@ -2445,47 +3178,339 @@
         showToast("Ба мунтахаб илова шуд");
       }
       writeStorage(STORAGE_KEYS.favorites, state.favorites);
-      updateLessonActionButtons();
+      updateLessonFavoriteBtn();
       updateProgressUI();
     });
 
-    dom.toggleLearnedBtn.addEventListener("click", () => {
-      const id = state.activeLessonId;
-      if (!id) return;
-      if (state.learned.includes(id)) {
-        state.learned = state.learned.filter((x) => x !== id);
-        showToast("Ҳолати омӯзиш баргардонида шуд");
-      } else {
-        state.learned.push(id);
-        showToast("Ҳамчун омӯхташуда қайд шуд!");
-      }
-      writeStorage(STORAGE_KEYS.learned, state.learned);
-      updateLessonActionButtons();
-      updateProgressUI();
-      renderExplorerTree();
+    dom.showHintBtn.addEventListener("click", () => dom.lessonHintBox.classList.toggle("hidden"));
+    dom.resetTaskBtn.addEventListener("click", () => {
+      const lesson = getLessonById(state.activeLessonId);
+      if (!lesson) return;
+      delete state.taskDrafts[lesson.id];
+      writeStorage(STORAGE_KEYS.taskDrafts, state.taskDrafts);
+      dom.lessonCodeEditor.value = lesson.starterCode;
+      dom.taskFeedbackBox.classList.add("hidden");
+      showToast("Вазифаи ҳамин дарс аз нав оғоз шуд");
     });
+
+    dom.lessonCodeEditor.addEventListener("input", () => {
+      if (!state.activeLessonId) return;
+      state.taskDrafts[state.activeLessonId] = dom.lessonCodeEditor.value;
+      writeStorage(STORAGE_KEYS.taskDrafts, state.taskDrafts);
+    });
+
+    dom.checkTaskBtn.addEventListener("click", evaluateLessonTask);
+    dom.toggleSolutionBtn.addEventListener("click", () => dom.lessonSolutionSection.classList.toggle("hidden"));
 
     dom.prevLessonBtn.addEventListener("click", () => {
-      const idx = LESSONS.findIndex((l) => l.id === state.activeLessonId);
-      if (idx > 0) openLesson(LESSONS[idx - 1].id);
+      const idx = ALL_LESSONS.findIndex((l) => l.id === state.activeLessonId);
+      if (idx > 0) openLesson(ALL_LESSONS[idx - 1].id);
     });
 
     dom.nextLessonBtn.addEventListener("click", () => {
-      const idx = LESSONS.findIndex((l) => l.id === state.activeLessonId);
-      if (idx >= 0 && idx < LESSONS.length - 1) openLesson(LESSONS[idx + 1].id);
+      const idx = ALL_LESSONS.findIndex((l) => l.id === state.activeLessonId);
+      if (idx >= 0 && idx < ALL_LESSONS.length - 1) openLesson(ALL_LESSONS[idx + 1].id);
     });
 
-    // Тугмаҳои нусхабардорӣ
     document.querySelectorAll(".copy-btn").forEach((btn) => {
       btn.addEventListener("click", () => {
-        const targetEl = document.getElementById(btn.dataset.copyTarget);
-        if (!targetEl) return;
-        const raw = targetEl.dataset.raw || targetEl.textContent;
-        copyTextToClipboard(raw);
+        const el = document.getElementById(btn.dataset.copyTarget);
+        if (el) copyTextToClipboard(el.dataset.raw || el.textContent);
       });
     });
 
-    // Намуди равшан/торик ва танзимот
+    // Studio Events
+    dom.studioCodeEditor.addEventListener("input", () => {
+      const proj = getActiveProject();
+      if (!proj) return;
+      state.undoStack.push(proj.files[state.activeStudioFile] || "");
+      if (state.undoStack.length > 40) state.undoStack.shift();
+      state.redoStack = [];
+      proj.files[state.activeStudioFile] = dom.studioCodeEditor.value;
+      proj.updatedAt = new Date().toISOString();
+      updateStudioLineNumbers();
+      saveStudioProjects();
+    });
+
+    dom.studioCodeEditor.addEventListener("scroll", () => {
+      dom.studioLineNumbers.scrollTop = dom.studioCodeEditor.scrollTop;
+    });
+
+    dom.studioCodeEditor.addEventListener("keydown", (e) => {
+      if (e.key === "Tab") {
+        e.preventDefault();
+        const start = dom.studioCodeEditor.selectionStart;
+        const end = dom.studioCodeEditor.selectionEnd;
+        const val = dom.studioCodeEditor.value;
+        dom.studioCodeEditor.value = val.substring(0, start) + "  " + val.substring(end);
+        dom.studioCodeEditor.selectionStart = dom.studioCodeEditor.selectionEnd = start + 2;
+      }
+    });
+
+    dom.studioUndoBtn.addEventListener("click", () => {
+      const proj = getActiveProject();
+      if (!proj || state.undoStack.length === 0) return;
+      state.redoStack.push(proj.files[state.activeStudioFile]);
+      proj.files[state.activeStudioFile] = state.undoStack.pop();
+      dom.studioCodeEditor.value = proj.files[state.activeStudioFile];
+      updateStudioLineNumbers();
+      saveStudioProjects();
+    });
+
+    dom.studioRedoBtn.addEventListener("click", () => {
+      const proj = getActiveProject();
+      if (!proj || state.redoStack.length === 0) return;
+      state.undoStack.push(proj.files[state.activeStudioFile]);
+      proj.files[state.activeStudioFile] = state.redoStack.pop();
+      dom.studioCodeEditor.value = proj.files[state.activeStudioFile];
+      updateStudioLineNumbers();
+      saveStudioProjects();
+    });
+
+    dom.studioFileList.addEventListener("click", (e) => {
+      const btn = e.target.closest(".studio-file-item");
+      if (btn) {
+        state.activeStudioFile = btn.dataset.studioFile;
+        renderStudio();
+      }
+    });
+
+    dom.studioProjectSelect.addEventListener("change", () => {
+      state.activeProjectId = dom.studioProjectSelect.value;
+      state.activeStudioFile = "index.html";
+      saveStudioProjects();
+      renderStudio();
+    });
+
+    dom.studioNewProjectBtn.addEventListener("click", () => {
+      openPromptModal("Лоиҳаи нав", "Номи лоиҳаи навро ворид кунед:", "Лоиҳаи нав", true, (name) => {
+        if (!name.trim()) return;
+        const np = createDefaultProject();
+        np.name = name.trim();
+        state.projects.push(np);
+        state.activeProjectId = np.id;
+        state.activeStudioFile = "index.html";
+        saveStudioProjects();
+        renderStudio();
+        showToast("Лоиҳаи нав сохта шуд!");
+      });
+    });
+
+    dom.studioNewFileBtn.addEventListener("click", () => {
+      openPromptModal("Файли нав", "Номи файлро нависед (масалан app.js ё about.html):", "page.html", true, (fn) => {
+        const clean = fn.trim();
+        const proj = getActiveProject();
+        if (!clean || !proj) return;
+        proj.files[clean] = "";
+        state.activeStudioFile = clean;
+        saveStudioProjects();
+        renderStudio();
+      });
+    });
+
+    dom.studioNewFolderBtn.addEventListener("click", () => {
+      openPromptModal("Папкаи нав", "Номи папкаро ворид кунед (масалан assets):", "assets", true, (folder) => {
+        const clean = folder.trim().replace(/\/+$/, "");
+        const proj = getActiveProject();
+        if (!clean || !proj) return;
+        const fileKey = `${clean}/info.txt`;
+        proj.files[fileKey] = "Папкаи " + clean;
+        state.activeStudioFile = fileKey;
+        saveStudioProjects();
+        renderStudio();
+      });
+    });
+
+    dom.studioRenameFileBtn.addEventListener("click", () => {
+      const proj = getActiveProject();
+      const oldName = state.activeStudioFile;
+      openPromptModal("Тағйири номи файл", "Номи навро ворид кунед:", oldName, true, (newName) => {
+        const clean = newName.trim();
+        if (!clean || clean === oldName || !proj) return;
+        proj.files[clean] = proj.files[oldName];
+        delete proj.files[oldName];
+        state.activeStudioFile = clean;
+        saveStudioProjects();
+        renderStudio();
+      });
+    });
+
+    dom.studioDeleteFileBtn.addEventListener("click", () => {
+      const proj = getActiveProject();
+      if (!proj || Object.keys(proj.files).length <= 1) {
+        showToast("Ҳадди ақал як файл бояд боқӣ монад");
+        return;
+      }
+      const target = state.activeStudioFile;
+      openPromptModal("Нест кардани файл", `Оё мутмаин ҳастед, ки «${target}»-ро нест кунед?`, "", false, () => {
+        delete proj.files[target];
+        state.activeStudioFile = Object.keys(proj.files)[0];
+        saveStudioProjects();
+        renderStudio();
+      });
+    });
+
+    dom.studioRunBtn.addEventListener("click", runStudioPreview);
+    dom.studioRerunBtn.addEventListener("click", runStudioPreview);
+    dom.studioClearFileBtn.addEventListener("click", () => {
+      const proj = getActiveProject();
+      if (!proj) return;
+      proj.files[state.activeStudioFile] = "";
+      dom.studioCodeEditor.value = "";
+      updateStudioLineNumbers();
+      saveStudioProjects();
+    });
+    dom.studioExpandBtn.addEventListener("click", () => {
+      dom.studioPreviewPane.classList.toggle("expanded");
+      dom.studioExpandBtn.textContent = dom.studioPreviewPane.classList.contains("expanded") ? "Хурд" : "Васеъ";
+    });
+    dom.studioFindToggleBtn.addEventListener("click", () => dom.studioFindBar.classList.toggle("hidden"));
+    dom.studioFindCloseBtn.addEventListener("click", () => dom.studioFindBar.classList.add("hidden"));
+    dom.studioReplaceAllBtn.addEventListener("click", () => {
+      const f = dom.studioFindInput.value;
+      const r = dom.studioReplaceInput.value;
+      if (!f) return;
+      const proj = getActiveProject();
+      proj.files[state.activeStudioFile] = dom.studioCodeEditor.value.split(f).join(r);
+      dom.studioCodeEditor.value = proj.files[state.activeStudioFile];
+      saveStudioProjects();
+      showToast("Матн иваз шуд");
+    });
+
+    dom.studioExportProjectBtn.addEventListener("click", () => {
+      const proj = getActiveProject();
+      if (!proj) return;
+      const blob = new Blob([JSON.stringify(proj, null, 2)], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `${proj.name.replace(/\s+/g, "_")}.json`;
+      a.click();
+      showToast("Лоиҳа содир шуд!");
+    });
+
+    // Projects Gallery
+    dom.projectsCreateBtn.addEventListener("click", () => {
+      const np = createDefaultProject();
+      state.projects.push(np);
+      state.activeProjectId = np.id;
+      saveStudioProjects();
+      renderProjectsGallery();
+      showToast("Лоиҳаи нав илова шуд");
+    });
+
+    dom.projectsGalleryGrid.addEventListener("click", (e) => {
+      const openBtn = e.target.closest(".open-proj-btn");
+      if (openBtn) {
+        state.activeProjectId = openBtn.dataset.projId;
+        saveStudioProjects();
+        switchView("studio");
+        return;
+      }
+      const renBtn = e.target.closest(".rename-proj-btn");
+      if (renBtn) {
+        const p = state.projects.find((x) => x.id === renBtn.dataset.projId);
+        if (p) openPromptModal("Тағйири номи лоиҳа", "", p.name, true, (n) => {
+          if (n.trim()) { p.name = n.trim(); saveStudioProjects(); renderProjectsGallery(); }
+        });
+        return;
+      }
+      const delBtn = e.target.closest(".delete-proj-btn");
+      if (delBtn) {
+        if (state.projects.length <= 1) { showToast("Ҳадди ақал як лоиҳа лозим аст"); return; }
+        const id = delBtn.dataset.projId;
+        openPromptModal("Нест кардани лоиҳа", "Оё мутмаин ҳастед?", "", false, () => {
+          state.projects = state.projects.filter((x) => x.id !== id);
+          if (state.activeProjectId === id) state.activeProjectId = state.projects[0].id;
+          saveStudioProjects();
+          renderProjectsGallery();
+        });
+      }
+    });
+
+    dom.projectsImportInput.addEventListener("change", (e) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const parsed = JSON.parse(String(reader.result));
+          if (parsed && parsed.files) {
+            parsed.id = "proj-" + Date.now();
+            state.projects.push(parsed);
+            saveStudioProjects();
+            renderProjectsGallery();
+            showToast("Лоиҳа ворид шуд!");
+          }
+        } catch (err) { showToast("Формати файл нодуруст аст"); }
+      };
+      reader.readAsText(file);
+    });
+
+    // AI Mentor Events
+    dom.aiToggleKeyVisBtn.addEventListener("click", () => {
+      const isPass = dom.aiApiKeyInput.type === "password";
+      dom.aiApiKeyInput.type = isPass ? "text" : "password";
+      dom.aiToggleKeyVisBtn.textContent = isPass ? "Пинҳон" : "Нишон додан";
+    });
+
+    dom.aiCheckKeyBtn.addEventListener("click", () => {
+      const key = dom.aiApiKeyInput.value.trim();
+      if (!key) { showToast("Аввал API Key-ро ворид кунед"); return; }
+      state.aiSessionKey = key;
+      fetchAvailableGeminiModels(key);
+    });
+
+    dom.aiClearKeyBtn.addEventListener("click", () => {
+      state.aiSessionKey = "";
+      state.aiModels = [];
+      state.aiSelectedModel = "";
+      dom.aiApiKeyInput.value = "";
+      dom.aiPersistKeyCheckbox.checked = false;
+      try { localStorage.removeItem(STORAGE_KEYS.aiKeyOptIn); } catch (e) {}
+      dom.aiModelSelect.innerHTML = `<option value="">Аввал калидро санҷед ё ворид кунед</option>`;
+      dom.aiStatusLabel.textContent = "Ҳолат: Калид нест карда шуд";
+      showToast("API Key нест карда шуд");
+    });
+
+    dom.aiPersistKeyCheckbox.addEventListener("change", () => {
+      if (dom.aiPersistKeyCheckbox.checked) {
+        const key = dom.aiApiKeyInput.value.trim() || state.aiSessionKey;
+        if (!key) { dom.aiPersistKeyCheckbox.checked = false; showToast("Аввал калидро ворид кунед"); return; }
+        openPromptModal(
+          "Огоҳии амниятӣ",
+          "Калиди API-и дар браузер захирашаванда пурра махфӣ шуда наметавонад. Оё бо масъулияти худ онро дар ин браузер захира кунед?",
+          "",
+          false,
+          () => {
+            writeStorage(STORAGE_KEYS.aiKeyOptIn, key);
+            showToast("Калид дар ин браузер захира шуд");
+          }
+        );
+      } else {
+        try { localStorage.removeItem(STORAGE_KEYS.aiKeyOptIn); } catch (e) {}
+      }
+    });
+
+    dom.aiModelSelect.addEventListener("change", () => { state.aiSelectedModel = dom.aiModelSelect.value; });
+    dom.aiChatForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const q = dom.aiPromptInput.value.trim();
+      if (!q) return;
+      dom.aiPromptInput.value = "";
+      sendAiPrompt(q);
+    });
+
+    document.querySelectorAll(".prompt-chip").forEach((chip) => {
+      chip.addEventListener("click", () => {
+        dom.aiPromptInput.value = chip.dataset.prompt;
+        sendAiPrompt(chip.dataset.prompt);
+      });
+    });
+
+    // Glossary
+    dom.glossarySearchInput.addEventListener("input", () => renderGlossary(dom.glossarySearchInput.value));
+
+    // Theme, Settings, Backup & Modals
     const toggleTheme = () => applyTheme(state.theme === "dark" ? "light" : "dark");
     dom.themeToggleBtn.addEventListener("click", toggleTheme);
     dom.modalThemeToggleBtn.addEventListener("click", toggleTheme);
@@ -2494,56 +3519,157 @@
       dom.resetConfirmBox.classList.add("hidden");
       dom.settingsModal.classList.remove("hidden");
     });
+    dom.closeSettingsBtn.addEventListener("click", () => dom.settingsModal.classList.add("hidden"));
+    dom.codeFontSizeSelect.addEventListener("change", () => applyCodeFontSize(dom.codeFontSizeSelect.value));
 
-    dom.closeSettingsBtn.addEventListener("click", () => {
-      dom.settingsModal.classList.add("hidden");
+    dom.exportBackupBtn.addEventListener("click", () => {
+      const backup = {
+        app: "WEB ACADEMY",
+        exportedAt: new Date().toISOString(),
+        learned: state.learned,
+        favorites: state.favorites,
+        xp: state.xp,
+        examPassed: state.examPassed,
+        projects: state.projects
+      };
+      const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "web-academy-backup.json";
+      a.click();
+      showToast("Нусхаи эҳтиётӣ содир шуд!");
     });
 
-    dom.settingsModal.addEventListener("click", (e) => {
-      if (e.target === dom.settingsModal) dom.settingsModal.classList.add("hidden");
+    dom.importBackupInput.addEventListener("change", (e) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const data = JSON.parse(String(reader.result));
+          if (Array.isArray(data.learned)) state.learned = data.learned;
+          if (Array.isArray(data.favorites)) state.favorites = data.favorites;
+          if (typeof data.xp === "number") state.xp = data.xp;
+          if (typeof data.examPassed === "boolean") state.examPassed = data.examPassed;
+          if (Array.isArray(data.projects) && data.projects.length) state.projects = data.projects;
+          writeStorage(STORAGE_KEYS.learned, state.learned);
+          writeStorage(STORAGE_KEYS.favorites, state.favorites);
+          writeStorage(STORAGE_KEYS.xp, state.xp);
+          writeStorage(STORAGE_KEYS.examPassed, state.examPassed);
+          saveStudioProjects();
+          updateProgressUI();
+          renderExplorerTree();
+          showToast("Маълумот барқарор карда шуд!");
+        } catch (err) { showToast("Файли эҳтиётӣ нодуруст аст"); }
+      };
+      reader.readAsText(file);
     });
 
-    dom.codeFontSizeSelect.addEventListener("change", () => {
-      applyCodeFontSize(dom.codeFontSizeSelect.value);
-    });
-
-    dom.resetDataBtn.addEventListener("click", () => {
-      dom.resetConfirmBox.classList.remove("hidden");
-    });
-
-    dom.cancelResetBtn.addEventListener("click", () => {
-      dom.resetConfirmBox.classList.add("hidden");
-    });
-
+    dom.resetDataBtn.addEventListener("click", () => dom.resetConfirmBox.classList.remove("hidden"));
+    dom.cancelResetBtn.addEventListener("click", () => dom.resetConfirmBox.classList.add("hidden"));
     dom.confirmResetBtn.addEventListener("click", () => {
-      state.favorites = [];
       state.learned = [];
-      writeStorage(STORAGE_KEYS.favorites, []);
+      state.favorites = [];
+      state.xp = 0;
+      state.examPassed = false;
+      state.taskDrafts = {};
+      state.projects = [createDefaultProject()];
+      state.activeProjectId = state.projects[0].id;
       writeStorage(STORAGE_KEYS.learned, []);
+      writeStorage(STORAGE_KEYS.favorites, []);
+      writeStorage(STORAGE_KEYS.xp, 0);
+      writeStorage(STORAGE_KEYS.examPassed, false);
+      writeStorage(STORAGE_KEYS.taskDrafts, {});
+      saveStudioProjects();
       dom.resetConfirmBox.classList.add("hidden");
       dom.settingsModal.classList.add("hidden");
       updateProgressUI();
-      updateLessonActionButtons();
-      renderExplorerTree();
-      if (state.currentView === "list") renderListView();
-      showToast("Ҳамаи пешрафт ва мунтахабҳо тоза шуданд");
+      switchView("home");
+      showToast("Ҳамаи маълумот тоза карда шуд");
     });
+
+    // Prompt Modal
+    dom.promptModalForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const val = dom.promptModalInput.value;
+      const cb = promptCallback;
+      closePromptModal();
+      if (cb) cb(val);
+    });
+    dom.closePromptModalBtn.addEventListener("click", closePromptModal);
+    dom.promptModalCancelBtn.addEventListener("click", closePromptModal);
+
+    // PWA Install
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      state.deferredInstallPrompt = e;
+    });
+
+    dom.installPwaBtn.addEventListener("click", async () => {
+      if (state.deferredInstallPrompt) {
+        state.deferredInstallPrompt.prompt();
+        const choice = await state.deferredInstallPrompt.userChoice;
+        if (choice.outcome === "accepted") showToast("Раванди насб оғоз шуд");
+        state.deferredInstallPrompt = null;
+      } else {
+        dom.installModal.classList.remove("hidden");
+      }
+    });
+    dom.closeInstallBtn.addEventListener("click", () => dom.installModal.classList.add("hidden"));
+
+    window.addEventListener("online", updateNetworkBadge);
+    window.addEventListener("offline", updateNetworkBadge);
   }
 
   /* -------------------- ОҒОЗИ БАРНОМА -------------------- */
   function init() {
-    state.theme = readStorage(STORAGE_KEYS.theme, "light");
+    state.theme = readStorage(STORAGE_KEYS.theme, "dark");
     state.codeFontSize = readStorage(STORAGE_KEYS.fontSize, "14.5");
     state.favorites = readStorage(STORAGE_KEYS.favorites, []);
     state.learned = readStorage(STORAGE_KEYS.learned, []);
     state.openFolders = readStorage(STORAGE_KEYS.openFolders, {});
+    state.xp = readStorage(STORAGE_KEYS.xp, 0);
+    state.daily = readStorage(STORAGE_KEYS.daily, { date: getTodayStr(), count: 0 });
+    if (state.daily.date !== getTodayStr()) state.daily = { date: getTodayStr(), count: 0 };
+    state.streak = readStorage(STORAGE_KEYS.streak, { lastDate: getTodayStr(), count: 1 });
+    state.examPassed = readStorage(STORAGE_KEYS.examPassed, false);
+    state.taskDrafts = readStorage(STORAGE_KEYS.taskDrafts, {});
+
+    state.projects = readStorage(STORAGE_KEYS.projects, []);
+    if (!Array.isArray(state.projects) || state.projects.length === 0) {
+      state.projects = [createDefaultProject()];
+    }
+    state.activeProjectId = readStorage(STORAGE_KEYS.activeProjectId, state.projects[0].id);
+
+    const savedAiKey = readStorage(STORAGE_KEYS.aiKeyOptIn, "");
+    if (savedAiKey) {
+      state.aiSessionKey = savedAiKey;
+      dom.aiApiKeyInput.value = savedAiKey;
+      dom.aiPersistKeyCheckbox.checked = true;
+      dom.aiStatusLabel.textContent = "Ҳолат: Калид аз хотираи браузер бор шуд";
+    }
 
     applyTheme(state.theme);
     applyCodeFontSize(state.codeFontSize);
+    updateNetworkBadge();
     bindEvents();
     updateProgressUI();
     renderExplorerTree();
-    renderRecommendedDashboard();
+
+    // Аниматсияи сайёра (2.4 сония) ва баъд саҳифаи истиқбол (танҳо бори аввал)
+    const reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const splashMs = reduced ? 400 : 2400;
+    setTimeout(() => {
+      dom.splashOverlay.classList.add("fade-out");
+      if (!readStorage(STORAGE_KEYS.welcomeSeen, false)) {
+        dom.welcomeOverlay.classList.remove("hidden");
+      }
+    }, splashMs);
+
+    // Бақайдгирии Service Worker барои PWA ва кори офлайн
+    if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost" || location.hostname === "127.0.0.1")) {
+      navigator.serviceWorker.register("./service-worker.js").catch(() => {});
+    }
   }
 
   document.addEventListener("DOMContentLoaded", init);
